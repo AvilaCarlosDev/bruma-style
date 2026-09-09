@@ -1,3 +1,2 @@
 #!/bin/sh
-
-exec nwg-drawer -wm hyprland -ovl -c 6 -is 72 -spacing 24
+exec python3 "$HOME/.config/waybar/scripts/glass/launcher.py"

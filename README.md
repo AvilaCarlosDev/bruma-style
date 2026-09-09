@@ -2,13 +2,21 @@
 
 Configuracion publica para Arch Linux + Hyprland con un estilo tipo macOS:
 
-- Hyprland con gaps, blur, bordes redondeados y animaciones suaves.
-- Waybar flotante con estilo glass.
-- Menu de aplicaciones con nwg-drawer.
-- Menus de bateria y apagado con wofi.
+- Hyprland con gaps, blur, bordes redondeados y animaciones suaves. Config nativa en
+  **Lua** (`hyprland.conf` queda solo de referencia historica, Hyprland carga
+  `hyprland.lua` directamente).
+- Waybar flotante con estilo glass, con indicador de layout de teclado (US/ES) e
+  icono de bluetooth con on-click/off-click correctos.
+- Menus propios en GTK ("Liquid Glass"): launcher, power, red, audio/volumen,
+  bateria, portapapeles, wallpaper (`waybar/scripts/glass/*.py`). Reemplazan a
+  wofi/rofi/nwg-drawer, que ya no se usan ni estan instalados.
+- Fn-row del teclado (probado en ThinkPad E14) mapeada a funciones reales: mute,
+  volumen, brillo, mic-mute, pantalla externa (`nwg-displays`), centro de
+  notificaciones (swaync), bluetooth on/off.
+- Monitor virtual headless + `wayvnc` para usar una tablet Android como segundo
+  monitor (workspace 10 dedicado, `SUPER+0` / `SUPER+SHIFT+0`).
 - Selector de wallpaper.
 - Modulo de clima para Waybar usando wttr.in.
-- Menu Wi-Fi clickeable con `nmcli` y `wofi`/`rofi`.
 - Overrides `.desktop` publicos para ocultar gestores de archivos duplicados del launcher.
 
 ## Capturas
@@ -20,14 +28,16 @@ Agrega aqui tus screenshots cuando quieras publicar el repositorio.
 Paquetes principales en Arch:
 
 ```sh
-sudo pacman -S --needed hyprland waybar wofi rofi nwg-drawer nwg-dock-hyprland swaybg swaync hyprlock wl-clipboard cliphist jq curl brightnessctl pavucontrol networkmanager network-manager-applet polkit-gnome desktop-file-utils
+sudo pacman -S --needed hyprland waybar nwg-dock-hyprland nwg-displays swaybg swaync hyprlock wl-clipboard cliphist jq curl brightnessctl wpctl networkmanager polkit-gnome desktop-file-utils gtk4
 ```
 
 Opcionales:
 
 ```sh
-sudo pacman -S --needed kitty nautilus papirus-icon-theme ttf-jetbrains-mono-nerd
+sudo pacman -S --needed kitty nautilus papirus-icon-theme ttf-jetbrains-mono-nerd wayvnc
 ```
+
+`wayvnc` solo hace falta si vas a usar el monitor virtual/tablet-como-segundo-monitor.
 
 Para los limites de carga de bateria se usa TLP. Si no usas TLP, puedes borrar scripts/battery-mode.sh y quitar el click de bateria en Waybar.
 

@@ -1,7 +1,7 @@
 /* macOS Tahoe-like floating topbar — Liquid Glass */
 
 * {
-  font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+  font-family: "JetBrainsMono Nerd Font", "Noto Color Emoji", "Noto Sans", sans-serif;
   font-size: 13px;
   min-height: 0;
   border: none;
@@ -18,7 +18,7 @@ window#waybar {
 #waybar > box {
   background: rgba(28, 28, 30, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
+  border-radius: 0;
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.10);
@@ -359,14 +359,21 @@ window#waybar {
 /* Right side modules */
 #tray,
 #network,
+#bluetooth,
 #pulseaudio,
 #battery,
+#language,
 #custom-launchpad,
 #custom-notification,
 #custom-power {
   padding: 0 10px;
   color: rgba(255, 255, 255, 0.92);
   transition: 200ms ease;
+}
+
+#language {
+  font-weight: 600;
+  font-size: 11px;
 }
 
 #custom-power {
@@ -385,7 +392,20 @@ window#waybar {
   color: #5ac8fa;
 }
 
-#tray { padding-left: 14px; }
+#tray {
+  padding: 0 8px;
+  margin-left: 6px;
+  margin-right: 2px;
+}
+
+#network {
+  min-width: 72px;
+  padding: 0 14px;
+}
+
+#bluetooth {
+  padding: 0 10px;
+}
 
 #custom-notification {
   padding: 0 16px 0 8px;
@@ -394,6 +414,7 @@ window#waybar {
 
 #pulseaudio:hover,
 #network:hover,
+#bluetooth:hover,
 #battery:hover,
 #custom-notification:hover {
   color: #ffffff;
@@ -465,6 +486,8 @@ tooltip label {
 /* Colores personalizados por módulo */
 #network { color: #64ddda; }
 #network.disconnected { color: #ff6b6b; }
+
+#bluetooth { color: #5ac8fa; }
 
 #pulseaudio { color: #d485ff; }
 #pulseaudio.muted { color: #ff9f43; }

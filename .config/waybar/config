@@ -3,9 +3,9 @@
   "position": "top",
   "height": 30,
   "spacing": 6,
-  "margin-top": 8,
-  "margin-left": 12,
-  "margin-right": 12,
+  "margin-top": 0,
+  "margin-left": 0,
+  "margin-right": 0,
   "modules-left": [
     "custom/logo",
     "hyprland/workspaces",
@@ -17,8 +17,10 @@
     "custom/weather"
   ],
   "modules-right": [
-    "tray",
     "network",
+    "bluetooth",
+    "tray",
+    "custom/language",
     "pulseaudio",
     "cpu",
     "memory",
@@ -50,21 +52,20 @@
     "max-length": 35,
     "rewrite": {
       "^(?!.*\\S).*": "Escritorio",
-      "^brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default$": "WhatsApp",
-      "^crx_hnpfjngllnobngcgfapefoaidbinmjnm$": "WhatsApp",
-      "^brave-magkoliahgffibhgfkmoealggombgknl-Default$": "Discord",
-      "^crx_magkoliahgffibhgfkmoealggombgknl$": "Discord",
-      "^brave-comkdlimbkhemidbbpchhepidbmjpnhh-Default$": "Twitch",
-      "^crx_comkdlimbkhemidbbpchhepidbmjpnhh$": "Twitch",
-      "^brave-eljhianlbceffjbgobligfjngmeheood-Default$": "LinkedIn",
-      "^crx_eljhianlbceffjbgobligfjngmeheood$": "LinkedIn",
-      "^brave-hjlhbeffadgkonmpnblkfmhckmocohah-Default$": "Crunchyroll",
-      "^crx_hjlhbeffadgkonmpnblkfmhckmocohah$": "Crunchyroll",
-      "^brave-web\\.whatsapp\\.com__-Default$": "WhatsApp"
+      "^chrome-fmpnliohjhemenmnlpbfagaolkdacoja-Default$": "Claude",
+      "^chrome-gemini\\.google\\.com__app-Default$": "Gemini",
+      "^chrome-chatgpt\\.com__-Default$": "ChatGPT",
+      "^chrome-www\\.twitch\\.tv__-Default$": "Twitch",
+      "^chrome-www\\.netflix\\.com__-Default$": "Netflix",
+      "^chrome-www\\.linkedin\\.com__-Default$": "LinkedIn",
+      "^chrome-mail\\.google\\.com__mail_-Default$": "Gmail",
+      "^chrome-discord\\.com__app-Default$": "Discord",
+      "^chrome-web\\.whatsapp\\.com__-Default$": "WhatsApp",
+      "^chrome-www\\.crunchyroll\\.com__-Default$": "Crunchyroll"
     }
   },
   "clock": {
-    "format": "{:%d/%m  ·  %H:%M}",
+    "format": "📅  {0:%d/%m}  ·  🕐  {0:%H:%M}",
     "tooltip-format": "<big><b>{0:%d/%m/%Y  ·  %H:%M}</b></big>\n<small>{0:%A   ·   semana %V}</small>\n\n<tt>{calendar}</tt>",
     "calendar": {
       "mode": "month",
@@ -107,11 +108,6 @@
     "format": "{}",
     "tooltip": true
   },
-  "custom/launchpad": {
-    "format": "",
-    "tooltip": false,
-    "on-click": "wofi --show drun"
-  },
   "tray": {
     "icon-size": 16,
     "spacing": 8
@@ -123,9 +119,26 @@
     "tooltip-format-wifi": "<b>{essid}</b>  ·  {signalStrength}%\nIP\t{ipaddr}\nGateway\t{gwaddr}\n↓ {bandwidthDownBytes}\t↑ {bandwidthUpBytes}",
     "tooltip-format-ethernet": "<b>{ifname}</b>  ·  Cableado\nIP\t{ipaddr}\nGateway\t{gwaddr}\n↓ {bandwidthDownBytes}\t↑ {bandwidthUpBytes}",
     "tooltip-format-disconnected": "Desconectado",
-    "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
+    "on-click": "~/.config/waybar/scripts/glass/network_menu.py",
     "on-click-right": "nm-connection-editor",
     "interval": 2
+  },
+  "custom/language": {
+    "exec": "~/.config/waybar/scripts/glass/language_status.sh",
+    "interval": "once",
+    "signal": 9,
+    "tooltip": false
+  },
+  "bluetooth": {
+    "format-on": "󰂯",
+    "format-connected": "󰂱",
+    "format-disabled": "",
+    "format-off": "",
+    "tooltip-format": "Bluetooth encendido",
+    "tooltip-format-connected": "Bluetooth conectado: {device_alias}",
+    "tooltip-format-connected-battery": "Bluetooth conectado: {device_alias} ({device_battery_percentage}%)",
+    "on-click": "blueman-manager",
+    "interval": 5
   },
   "pulseaudio": {
     "scroll-step": 5,
@@ -138,7 +151,7 @@
         ""
       ]
     },
-    "on-click": "pavucontrol",
+    "on-click": "~/.config/waybar/scripts/glass/audio_menu.py",
     "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   },
   "battery": {
@@ -156,7 +169,7 @@
       "",
       ""
     ],
-    "on-click": "~/.config/waybar/scripts/battery-menu.sh",
+    "on-click": "~/.config/waybar/scripts/glass/battery_menu.py",
     "tooltip": true
   },
   "cpu": {
@@ -185,6 +198,6 @@
   "custom/power": {
     "format": "⏻",
     "tooltip": false,
-    "on-click": "~/.config/waybar/scripts/power-menu.sh"
+    "on-click": "~/.config/waybar/scripts/glass/power_menu.py"
   }
 }

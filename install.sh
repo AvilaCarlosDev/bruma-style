@@ -7,7 +7,7 @@ backup_dir="$HOME/.dotfiles-hyprland-backup-$(date +%Y%m%d-%H%M%S)"
 echo "Creating backup in: $backup_dir"
 mkdir -p "$backup_dir/.config"
 
-for dir in hypr waybar wofi rofi; do
+for dir in hypr waybar; do
   if [ -e "$HOME/.config/$dir" ]; then
     cp -a "$HOME/.config/$dir" "$backup_dir/.config/"
   fi
@@ -26,8 +26,6 @@ echo "Installing dotfiles..."
 mkdir -p "$HOME/.config"
 cp -a "$repo_dir/.config/hypr" "$HOME/.config/"
 cp -a "$repo_dir/.config/waybar" "$HOME/.config/"
-cp -a "$repo_dir/.config/wofi" "$HOME/.config/"
-cp -a "$repo_dir/.config/rofi" "$HOME/.config/"
 
 mkdir -p "$HOME/.local/share/applications"
 cp -a "$repo_dir/applications/"*.desktop "$HOME/.local/share/applications/"

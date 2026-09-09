@@ -6,10 +6,8 @@ Minimal Arch package list used by this setup:
 sudo pacman -S --needed \
   hyprland \
   waybar \
-  wofi \
-  rofi \
-  nwg-drawer \
   nwg-dock-hyprland \
+  nwg-displays \
   swaybg \
   swaync \
   hyprlock \
@@ -18,13 +16,15 @@ sudo pacman -S --needed \
   jq \
   curl \
   brightnessctl \
-  pavucontrol \
   networkmanager \
-  network-manager-applet \
   polkit-gnome \
   desktop-file-utils \
+  gtk4 \
   kitty \
   nautilus \
   papirus-icon-theme \
   ttf-jetbrains-mono-nerd
+
+# opcional, solo si usás el monitor virtual/tablet-como-segundo-monitor
+sudo pacman -S --needed wayvnc
 ```

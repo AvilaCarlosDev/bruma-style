@@ -5,8 +5,8 @@
 #   tooltip: pango markup con info detallada (clima, viento, humedad,
 #            sensación térmica, amanecer/atardecer)
 
-LOCATION="${WEATHER_LOCATION:-Caracas,Venezuela}"
-LOCATION_PRETTY="${WEATHER_LOCATION_PRETTY:-Caracas, VE}"
+LOCATION="Punto+Fijo,Venezuela"
+LOCATION_PRETTY="Punto Fijo, VE"
 COLD_THRESHOLD=5            # °C: por debajo de esto activa la animación "cold"
 CACHE_DIR="${XDG_RUNTIME_DIR:-/tmp}/waybar-weather"
 mkdir -p "$CACHE_DIR"

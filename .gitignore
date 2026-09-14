@@ -37,3 +37,8 @@ NetworkManager/
 Thumbs.db
 .idea/
 .vscode/
+
+# Python bytecode (generado por los menus GTK)
+__pycache__/
+*.py[cod]
+*$py.class

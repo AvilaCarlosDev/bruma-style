@@ -126,7 +126,9 @@ from pathlib import Path
 import re
 
 root = Path('.')
-for document in (root / 'README.md', root / 'PACKAGES.md'):
+for name in ('README.md', 'README.en.md', 'PACKAGES.md', 'PACKAGES.en.md', 'CONTRIBUTING.md',
+             'SECURITY.md', 'CODE_OF_CONDUCT.md', 'CHANGELOG.md'):
+    document = root / name
     text = document.read_text(encoding='utf-8')
     for target in re.findall(r'!?\[[^]]*\]\(([^)]+)\)', text):
         if target.startswith(('http://', 'https://', '#')):

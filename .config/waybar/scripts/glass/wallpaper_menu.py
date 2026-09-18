@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import hashlib
+import html
 import os
 import subprocess
 import sys
@@ -48,8 +49,8 @@ def apply_wallpaper(path):
     subprocess.Popen(["swaybg", "-i", path, "-m", "fill"])
     with open(CURRENT_FILE, "w") as f:
         f.write(path)
-    subprocess.Popen(["notify-send", "Wallpaper", f"Fondo cambiado a: {os.path.basename(path)}",
-                       "-i", path])
+    nombre = html.escape(os.path.basename(path), quote=False)
+    subprocess.Popen(["notify-send", "Wallpaper", f"Fondo cambiado a: {nombre}", "-i", path])
 
 
 class WallpaperPicker:

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import html
 import subprocess
 import sys
 import threading
@@ -13,8 +14,8 @@ def run(*cmd):
     def watch():
         _, err = p.communicate()
         if p.returncode not in (0, None) and err:
-            subprocess.Popen(["notify-send", "Energía",
-                               f"{cmd[0]} falló: {err.decode(errors='replace')[:200]}"])
+            detalle = f"{cmd[0]} falló: {err.decode(errors='replace')[:200]}"
+            subprocess.Popen(["notify-send", "Energía", html.escape(detalle, quote=False)])
 
     threading.Thread(target=watch, daemon=True).start()
 

@@ -8,14 +8,19 @@
 LOCATION="${WEATHER_LOCATION:-Caracas,Venezuela}"
 LOCATION_PRETTY="${WEATHER_LOCATION_PRETTY:-Caracas, VE}"
 COLD_THRESHOLD=5            # °C: por debajo de esto activa la animación "cold"
-CACHE_DIR="${XDG_RUNTIME_DIR:-/tmp}/waybar-weather"
+# Directorio propio del usuario: un /tmp compartido permitiría a otro usuario plantar
+# enlaces simbólicos que este script seguiría al escribir la caché.
+CACHE_DIR="${XDG_RUNTIME_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}}/waybar-weather"
 mkdir -p "$CACHE_DIR"
+chmod 700 "$CACHE_DIR"
 ASTRO_CACHE="$CACHE_DIR/astronomy"
 DATA_CACHE="$CACHE_DIR/last-good"
 
 today=$(date +%Y-%m-%d)
 
-data=$(curl -s --max-time 8 "https://wttr.in/${LOCATION}?format=j1" 2>/dev/null)
+# La ubicación viene del entorno: se codifica para que "/", "?" o "#" no alteren la URL.
+LOCATION_URL=$(jq -rn --arg value "$LOCATION" '$value | @uri')
+data=$(curl -s --max-time 8 "https://wttr.in/${LOCATION_URL}?format=j1" 2>/dev/null)
 if [[ -z "$data" ]] || ! echo "$data" | jq -e . >/dev/null 2>&1; then
     [[ -s "$DATA_CACHE" ]] && data=$(cat "$DATA_CACHE")
 fi

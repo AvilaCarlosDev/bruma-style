@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-runtime_dir="${XDG_RUNTIME_DIR:-/tmp}"
+runtime_dir="${XDG_RUNTIME_DIR:?hyprglass: XDG_RUNTIME_DIR no está definido; el PID y el registro de WayVNC no van en /tmp compartido}"
 pid_file="$runtime_dir/hyprglass-wayvnc.pid"
 
 if [[ -f "$pid_file" ]]; then

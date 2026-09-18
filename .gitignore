@@ -42,3 +42,8 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Herramientas de desarrollo
+.pytest_cache/
+.ruff_cache/
+.venv/

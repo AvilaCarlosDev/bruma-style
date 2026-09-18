@@ -6,7 +6,9 @@ from pathlib import Path
 
 import pytest
 
-GLASS_DIR = Path(__file__).resolve().parents[2] / ".config" / "waybar" / "scripts" / "glass"
+ROOT = Path(__file__).resolve().parents[2]
+GLASS_DIR = ROOT / ".config" / "waybar" / "scripts" / "glass"
+HYPR_SCRIPTS_DIR = ROOT / ".config" / "hypr" / "scripts"
 
 
 def _install_gi_stub():
@@ -35,6 +37,20 @@ def load_menu():
 
     def _load(name):
         spec = importlib.util.spec_from_file_location(f"glass_{name}", GLASS_DIR / f"{name}.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
+    return _load
+
+
+@pytest.fixture
+def load_hypr_script():
+    """Carga un script de `.config/hypr/scripts/` (el nombre puede llevar guion)."""
+
+    def _load(filename):
+        name = filename.removesuffix(".py").replace("-", "_")
+        spec = importlib.util.spec_from_file_location(name, HYPR_SCRIPTS_DIR / filename)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module

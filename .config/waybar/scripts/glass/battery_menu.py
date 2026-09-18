@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import subprocess
 import sys
 
@@ -6,13 +7,37 @@ sys.path.insert(0, __file__.rsplit("/", 1)[0])
 from common import GlassPopup, make_list, add_row, bind_activate, section_label
 from gi.repository import Gtk
 
-BAT = "/sys/class/power_supply/BAT0"
-MODE_SCRIPT = "/home/carlosdev/scripts/battery-mode.sh"
+POWER_SUPPLY_ROOT = "/sys/class/power_supply"
+MODE_SCRIPT = os.path.expanduser("~/scripts/battery-mode.sh")
+
+
+def battery_path():
+    override = os.environ.get("HYPRGLASS_BATTERY_PATH")
+    if override:
+        return override
+
+    try:
+        for name in sorted(os.listdir(POWER_SUPPLY_ROOT)):
+            path = os.path.join(POWER_SUPPLY_ROOT, name)
+            try:
+                with open(os.path.join(path, "type"), encoding="utf-8") as handle:
+                    if handle.read().strip() == "Battery":
+                        return path
+            except OSError:
+                continue
+    except OSError:
+        pass
+    return ""
+
+
+BAT = battery_path()
 
 
 def read(path, default="?"):
+    if not BAT:
+        return default
     try:
-        with open(f"{BAT}/{path}") as f:
+        with open(f"{BAT}/{path}", encoding="utf-8") as f:
             return f.read().strip()
     except OSError:
         return default

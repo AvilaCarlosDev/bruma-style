@@ -1,117 +1,38 @@
-/* macOS-style traffic-light window controls for GTK 4/libadwaita apps.
- * Keep app/workspace icons untouched; this only styles window buttons.
- * The visible circles are fixed-size SVGs, centered so wide GTK buttons
- * cannot stretch into ovals.
+/* Portable colored window controls for GTK 4/libadwaita.
+ * No external theme paths or third-party image assets are required.
  */
 
 windowcontrols button,
 button.titlebutton,
 .titlebutton,
-headerbar windowcontrols button,
-headerbar.titlebar windowcontrols button,
-headerbar.default-decoration windowcontrols button,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton {
-  min-width: 18px;
-  min-height: 18px;
+headerbar windowcontrols button {
+  min-width: 14px;
+  min-height: 14px;
   padding: 0;
   margin: 0 3px;
   border: 0;
-  border-radius: 0;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px 16px;
+  border-radius: 50%;
   box-shadow: none;
   color: transparent;
   -gtk-icon-shadow: none;
-  opacity: 1;
 }
 
 windowcontrols button image,
 button.titlebutton image,
-.titlebutton image,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton image {
-  min-width: 16px;
-  min-height: 16px;
-  padding: 0;
-  color: transparent;
+.titlebutton image {
   opacity: 0;
-  -gtk-icon-shadow: none;
 }
 
 windowcontrols button.close,
 button.titlebutton.close,
-.titlebutton.close,
-headerbar windowcontrols button.close,
-headerbar.titlebar windowcontrols button.close,
-headerbar.default-decoration windowcontrols button.close,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.close {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-close.svg");
-}
-
-windowcontrols button.close:hover,
-button.titlebutton.close:hover,
-.titlebutton.close:hover,
-headerbar windowcontrols button.close:hover,
-headerbar.titlebar windowcontrols button.close:hover,
-headerbar.default-decoration windowcontrols button.close:hover,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.close:hover {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-close-hover.svg");
-}
-
-windowcontrols button.close:active,
-button.titlebutton.close:active,
-.titlebutton.close:active,
-headerbar windowcontrols button.close:active,
-headerbar.titlebar windowcontrols button.close:active,
-headerbar.default-decoration windowcontrols button.close:active,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.close:active {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-close-active.svg");
+.titlebutton.close {
+  background: #ff5f57;
 }
 
 windowcontrols button.minimize,
-windowcontrols button.minimize:disabled,
-windowcontrols button.minimize:backdrop,
 button.titlebutton.minimize,
-button.titlebutton.minimize:disabled,
-button.titlebutton.minimize:backdrop,
-.titlebutton.minimize,
-.titlebutton.minimize:disabled,
-.titlebutton.minimize:backdrop,
-headerbar windowcontrols button.minimize,
-headerbar windowcontrols button.minimize:disabled,
-headerbar windowcontrols button.minimize:backdrop,
-headerbar.titlebar windowcontrols button.minimize,
-headerbar.titlebar windowcontrols button.minimize:disabled,
-headerbar.titlebar windowcontrols button.minimize:backdrop,
-headerbar.default-decoration windowcontrols button.minimize,
-headerbar.default-decoration windowcontrols button.minimize:disabled,
-headerbar.default-decoration windowcontrols button.minimize:backdrop,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.minimize,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.minimize:disabled,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.minimize:backdrop {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-minimize.svg");
-  opacity: 1;
-}
-
-windowcontrols button.minimize:hover,
-button.titlebutton.minimize:hover,
-.titlebutton.minimize:hover,
-headerbar windowcontrols button.minimize:hover,
-headerbar.titlebar windowcontrols button.minimize:hover,
-headerbar.default-decoration windowcontrols button.minimize:hover,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.minimize:hover {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-minimize-hover.svg");
-}
-
-windowcontrols button.minimize:active,
-button.titlebutton.minimize:active,
-.titlebutton.minimize:active,
-headerbar windowcontrols button.minimize:active,
-headerbar.titlebar windowcontrols button.minimize:active,
-headerbar.default-decoration windowcontrols button.minimize:active,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.minimize:active {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-minimize-active.svg");
+.titlebutton.minimize {
+  background: #febc2e;
 }
 
 windowcontrols button.maximize,
@@ -119,49 +40,12 @@ windowcontrols button.restore,
 button.titlebutton.maximize,
 button.titlebutton.restore,
 .titlebutton.maximize,
-.titlebutton.restore,
-headerbar windowcontrols button.maximize,
-headerbar windowcontrols button.restore,
-headerbar.titlebar windowcontrols button.maximize,
-headerbar.titlebar windowcontrols button.restore,
-headerbar.default-decoration windowcontrols button.maximize,
-headerbar.default-decoration windowcontrols button.restore,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.maximize,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.restore {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-maximize.svg");
+.titlebutton.restore {
+  background: #28c840;
 }
 
-windowcontrols button.maximize:hover,
-windowcontrols button.restore:hover,
-button.titlebutton.maximize:hover,
-button.titlebutton.restore:hover,
-.titlebutton.maximize:hover,
-.titlebutton.restore:hover,
-headerbar windowcontrols button.maximize:hover,
-headerbar windowcontrols button.restore:hover,
-headerbar.titlebar windowcontrols button.maximize:hover,
-headerbar.titlebar windowcontrols button.restore:hover,
-headerbar.default-decoration windowcontrols button.maximize:hover,
-headerbar.default-decoration windowcontrols button.restore:hover,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.maximize:hover,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.restore:hover {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-maximize-hover.svg");
+windowcontrols button:hover,
+button.titlebutton:hover,
+.titlebutton:hover {
+  filter: brightness(1.12);
 }
-
-windowcontrols button.maximize:active,
-windowcontrols button.restore:active,
-button.titlebutton.maximize:active,
-button.titlebutton.restore:active,
-.titlebutton.maximize:active,
-.titlebutton.restore:active,
-headerbar windowcontrols button.maximize:active,
-headerbar windowcontrols button.restore:active,
-headerbar.titlebar windowcontrols button.maximize:active,
-headerbar.titlebar windowcontrols button.restore:active,
-headerbar.default-decoration windowcontrols button.maximize:active,
-headerbar.default-decoration windowcontrols button.restore:active,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.maximize:active,
-window.background.chromium headerbar.header-bar.titlebar button.titlebutton.restore:active {
-  background-image: url("/home/carlosdev/.themes/WhiteSur-Dark/metacity-1/titlebuttons/titlebutton-maximize-active.svg");
-}
-

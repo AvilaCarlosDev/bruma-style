@@ -47,40 +47,17 @@ def scan():
     return seen
 
 
-def ask_password(ssid):
-    dlg = Gtk.Dialog(title=f"Clave para {ssid}")
-    dlg.get_style_context().add_class("glass-panel")
-    dlg.set_decorated(False)
-    entry = Gtk.Entry(visibility=False)
-    entry.get_style_context().add_class("glass-search")
-    entry.set_activates_default(True)
-    box = dlg.get_content_area()
-    box.set_spacing(8)
-    box.set_margin_top(12)
-    box.set_margin_bottom(12)
-    box.set_margin_start(12)
-    box.set_margin_end(12)
-    box.add(entry)
-    dlg.add_button("Conectar", Gtk.ResponseType.OK)
-    dlg.set_default_response(Gtk.ResponseType.OK)
-    dlg.show_all()
-    resp = dlg.run()
-    pw = entry.get_text() if resp == Gtk.ResponseType.OK else None
-    dlg.destroy()
-    return pw
-
-
 def connect(ssid, security, saved):
     if ssid in saved:
         ok = subprocess.run(["nmcli", "connection", "up", "id", ssid]).returncode == 0
         notify(f"Conectado a {ssid}" if ok else f"No pude conectar con el perfil guardado: {ssid}")
         return
     if security and security != "--":
-        pw = ask_password(ssid)
-        if not pw:
-            return
-        ok = subprocess.run(["nmcli", "device", "wifi", "connect", ssid, "password", pw]).returncode == 0
-        notify(f"Conectado a {ssid}" if ok else f"No pude conectar a {ssid}. Revisa la clave o la señal.")
+        # Never place a Wi-Fi password in argv, where another local process may
+        # observe it. Let NetworkManager's editor/secret agent handle new
+        # protected profiles; saved profiles still connect directly above.
+        notify(f"Configura {ssid} en el editor seguro de NetworkManager")
+        subprocess.Popen(["nm-connection-editor"])
     else:
         ok = subprocess.run(["nmcli", "device", "wifi", "connect", ssid]).returncode == 0
         notify(f"Conectado a {ssid}" if ok else f"No pude conectar a {ssid}")

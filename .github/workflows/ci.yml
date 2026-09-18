@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install validation tools
+        run: sudo apt-get update && sudo apt-get install --yes ripgrep shellcheck
+
+      - name: Run repository checks
+        run: ./tests/run.sh
+
+      - name: Run ShellCheck
+        run: shellcheck install.sh scripts/*.sh tests/*.sh .config/hypr/scripts/*.sh .config/waybar/scripts/*.sh

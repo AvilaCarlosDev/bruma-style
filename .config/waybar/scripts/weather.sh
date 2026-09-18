@@ -5,8 +5,8 @@
 #   tooltip: pango markup con info detallada (clima, viento, humedad,
 #            sensación térmica, amanecer/atardecer)
 
-LOCATION="Punto+Fijo,Venezuela"
-LOCATION_PRETTY="Punto Fijo, VE"
+LOCATION="${WEATHER_LOCATION:-Caracas,Venezuela}"
+LOCATION_PRETTY="${WEATHER_LOCATION_PRETTY:-Caracas, VE}"
 COLD_THRESHOLD=5            # °C: por debajo de esto activa la animación "cold"
 CACHE_DIR="${XDG_RUNTIME_DIR:-/tmp}/waybar-weather"
 mkdir -p "$CACHE_DIR"
@@ -53,7 +53,7 @@ fi
 
 to_min() {
     local h m ampm
-    read -r h m ampm <<< "$(echo "$1" | sed 's/:/ /')"
+    read -r h m ampm <<< "${1/:/ }"
     h=$((10#$h)); m=$((10#$m))
     [[ "$ampm" == "PM" && "$h" -lt 12 ]] && h=$((h + 12))
     [[ "$ampm" == "AM" && "$h" -eq 12 ]] && h=0

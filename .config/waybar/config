@@ -51,17 +51,7 @@
     "format": "{class}",
     "max-length": 35,
     "rewrite": {
-      "^(?!.*\\S).*": "Escritorio",
-      "^chrome-fmpnliohjhemenmnlpbfagaolkdacoja-Default$": "Claude",
-      "^chrome-gemini\\.google\\.com__app-Default$": "Gemini",
-      "^chrome-chatgpt\\.com__-Default$": "ChatGPT",
-      "^chrome-www\\.twitch\\.tv__-Default$": "Twitch",
-      "^chrome-www\\.netflix\\.com__-Default$": "Netflix",
-      "^chrome-www\\.linkedin\\.com__-Default$": "LinkedIn",
-      "^chrome-mail\\.google\\.com__mail_-Default$": "Gmail",
-      "^chrome-discord\\.com__app-Default$": "Discord",
-      "^chrome-web\\.whatsapp\\.com__-Default$": "WhatsApp",
-      "^chrome-www\\.crunchyroll\\.com__-Default$": "Crunchyroll"
+      "^(?!.*\\S).*": "Escritorio"
     }
   },
   "clock": {
@@ -137,7 +127,7 @@
     "tooltip-format": "Bluetooth encendido",
     "tooltip-format-connected": "Bluetooth conectado: {device_alias}",
     "tooltip-format-connected-battery": "Bluetooth conectado: {device_alias} ({device_battery_percentage}%)",
-    "on-click": "blueman-manager",
+    "on-click": "~/.config/waybar/scripts/glass/bluetooth_menu.py",
     "interval": 5
   },
   "pulseaudio": {

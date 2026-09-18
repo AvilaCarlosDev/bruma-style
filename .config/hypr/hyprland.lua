@@ -1,5 +1,4 @@
--- Hyprland Lua config migrated from ~/.config/hypr/hyprland.conf.
--- Backup snapshot: ~/.config/hypr/snapshots/pre-lua-migration-20260817-101624
+-- Portable public configuration for Hyprland's native Lua loader.
 
 hl.monitor({
     output = "",
@@ -9,29 +8,32 @@ hl.monitor({
 })
 
 local terminal = "kitty"
-local fileManager = "nautilus"
+local fileManager = "thunar"
+local browser = "firefox"
 local menu = "~/.config/waybar/scripts/launcher-menu.sh"
 local mainMod = "SUPER"
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd([[sh -lc 'wall="$(cat ~/.config/hypr/current_wallpaper 2>/dev/null || echo ~/wallpaper/nature.jpg)"; pkill swaybg 2>/dev/null; swaybg -i "$wall" -m fill &']])
+    hl.exec_cmd([[sh -lc 'wall="$(cat ~/.config/hypr/current_wallpaper 2>/dev/null || true)"; if [ -n "$wall" ] && [ -f "$wall" ]; then pkill swaybg 2>/dev/null || true; swaybg -i "$wall" -m fill & fi']])
     hl.exec_cmd("swaync")
     hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
     hl.exec_cmd("wl-paste --type text --watch cliphist store")
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
     hl.exec_cmd("~/.config/waybar/scripts/weather.sh > /dev/null 2>&1 &")
     hl.exec_cmd([[sh -lc 'while true; do waybar; sleep 3; done']])
-    hl.exec_cmd("nwg-dock-hyprland -p bottom -i 44 -mb 8 -ml 12 -mr 12 -nolauncher -l overlay -d -hd 100")
-    hl.exec_cmd("eww daemon")
+    hl.exec_cmd([[sh -lc 'while true; do nwg-dock-hyprland -p bottom -i 44 -mb 8 -ml 12 -mr 12 -nolauncher -l overlay -d -hd 100; sleep 3; done']])
     hl.exec_cmd("~/.config/hypr/scripts/layout-signal.py &")
-    hl.exec_cmd("~/.config/hypr/scripts/setup-headless-monitor.sh")
+    hl.exec_cmd("~/.config/hypr/scripts/setup-workspace-rules.sh")
 end)
 
-hl.env("XCURSOR_THEME", "McMojave-cursors")
+-- Hyprland keeps these workspace rules in memory. Reapply them after a
+-- config reload; the tablet output itself remains opt-in via SUPER+F12.
+hl.on("config.reloaded", function()
+    hl.exec_cmd("~/.config/hypr/scripts/setup-workspace-rules.sh")
+end)
+
 hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_THEME", "McMojave-cursors")
 hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_QPA_PLATFORM", "wayland")
 hl.env("GDK_BACKEND", "wayland,x11")
 
@@ -104,16 +106,16 @@ hl.config({
     },
 })
 
-hl.curve("macIn", { type = "bezier", points = { { 0.32, 0.72 }, { 0, 1 } } })
-hl.curve("macOut", { type = "bezier", points = { { 0.42, 0 }, { 0.58, 1 } } })
+hl.curve("glassIn", { type = "bezier", points = { { 0.32, 0.72 }, { 0, 1 } } })
+hl.curve("glassOut", { type = "bezier", points = { { 0.42, 0 }, { 0.58, 1 } } })
 hl.curve("bounce", { type = "bezier", points = { { 0.5, 1.5 }, { 0.5, 1 } } })
 
-hl.animation({ leaf = "windows", enabled = true, speed = 4, bezier = "macIn", style = "popin 80%" })
-hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "macOut", style = "popin 80%" })
+hl.animation({ leaf = "windows", enabled = true, speed = 4, bezier = "glassIn", style = "popin 80%" })
+hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "glassOut", style = "popin 80%" })
 hl.animation({ leaf = "border", enabled = true, speed = 8, bezier = "default" })
-hl.animation({ leaf = "fade", enabled = true, speed = 5, bezier = "macIn" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "macIn", style = "slide" })
-hl.animation({ leaf = "layers", enabled = true, speed = 3, bezier = "macIn", style = "fade" })
+hl.animation({ leaf = "fade", enabled = true, speed = 5, bezier = "glassIn" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "glassIn", style = "slide" })
+hl.animation({ leaf = "layers", enabled = true, speed = 3, bezier = "glassIn", style = "fade" })
 
 hl.gesture({
     fingers = 3,
@@ -173,37 +175,13 @@ hl.layer_rule({
     ignore_alpha = true,
 })
 
-hl.layer_rule({
-    name = "blur-eww-powermenu",
-    match = { namespace = "eww-powermenu" },
-    blur = true,
-    ignore_alpha = true,
-})
-
-hl.layer_rule({
-    name = "blur-eww-netmenu",
-    match = { namespace = "eww-netmenu" },
-    blur = true,
-    ignore_alpha = true,
-})
-
-hl.layer_rule({
-    name = "blur-eww-volmenu",
-    match = { namespace = "eww-volmenu" },
-    blur = true,
-    ignore_alpha = true,
-})
-
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + R", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + V", hl.dsp.exec_cmd([[cliphist list | rofi -dmenu -p "Clipboard" | cliphist decode | wl-copy]]))
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("gtk-launch brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default"))
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("brave"))
-hl.bind(mainMod .. " + I", hl.dsp.exec_cmd("~/.config/hypr/scripts/shimeji-luffy-menu.sh"))
-hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("shimejictl dismiss --all"))
+hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("python3 ~/.config/waybar/scripts/glass/clipboard_menu.py"))
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle", mode = "fullscreen" }))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
@@ -219,9 +197,13 @@ for i = 1, 9 do
     hl.bind(mainMod .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
 end
 
--- workspace 10 = tablet (HEADLESS-1 via wayvnc)
+-- Workspace 10 is reserved for the optional headless tablet output.
 hl.bind(mainMod .. " + 0", hl.dsp.focus({ workspace = 10 }))
 hl.bind(mainMod .. " + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }))
+
+-- Create/remove the tablet output only when requested. The helper scripts
+-- detect actual output names instead of assuming a specific HEADLESS number.
+hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-tablet-monitor.sh"))
 
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })

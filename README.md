@@ -1,87 +1,155 @@
-# Hyprland macOS-style dotfiles
+# hyprglass
 
-Configuracion publica para Arch Linux + Hyprland con un estilo tipo macOS:
+Hyprglass is the public, portable subset of my Arch Linux + Hyprland desktop.
+Its visual language uses translucent surfaces, rounded geometry and custom GTK
+menus. It is not a macOS clone and it does not attempt to reproduce another
+desktop environment.
 
-- Hyprland con gaps, blur, bordes redondeados y animaciones suaves. Config nativa en
-  **Lua** (`hyprland.conf` queda solo de referencia historica, Hyprland carga
-  `hyprland.lua` directamente).
-- Waybar flotante con estilo glass, con indicador de layout de teclado (US/ES) e
-  icono de bluetooth con on-click/off-click correctos.
-- Menus propios en GTK ("Liquid Glass"): launcher, power, red, audio/volumen,
-  bateria, portapapeles, wallpaper (`waybar/scripts/glass/*.py`). Reemplazan a
-  wofi/rofi/nwg-drawer, que ya no se usan ni estan instalados.
-- Fn-row del teclado (probado en ThinkPad E14) mapeada a funciones reales: mute,
-  volumen, brillo, mic-mute, pantalla externa (`nwg-displays`), centro de
-  notificaciones (swaync), bluetooth on/off.
-- Monitor virtual headless + `wayvnc` para usar una tablet Android como segundo
-  monitor (workspace 10 dedicado, `SUPER+0` / `SUPER+SHIFT+0`).
-- Selector de wallpaper.
-- Modulo de clima para Waybar usando wttr.in.
-- Overrides `.desktop` publicos para ocultar gestores de archivos duplicados del launcher.
+> **Current scope:** tested on Arch Linux with Hyprland 0.56.2 and a ThinkPad
+> E14. Hardware keys, battery charge thresholds and monitor names vary between
+> computers; the relevant limitations are documented below.
 
-## Capturas
+## What is included
 
-Agrega aqui tus screenshots cuando quieras publicar el repositorio.
+- A native Hyprland Lua configuration with gaps, blur, rounded corners,
+  animations and keyboard/mouse bindings.
+- A floating Waybar with keyboard-layout, media, weather, network, Bluetooth,
+  audio, CPU, memory, battery, notifications and power modules.
+- Hand-built GTK 3 + GtkLayerShell menus for applications, power, network,
+  audio, battery, clipboard, Bluetooth and wallpapers.
+- An optional, on-demand headless output with WayVNC for using a tablet as a
+  second screen.
+- A backup-first installer and automated checks for the public configuration.
 
-## Dependencias
+The public repository intentionally excludes machine-specific PWAs, private
+network profiles, Shimeji processes, absolute home paths, caches and local
+backups.
 
-Paquetes principales en Arch:
+## Screenshots
+
+Waybar:
+
+![Waybar](docs/assets/hyprglass-waybar.png)
+
+One of the custom glass menus:
+
+![Power menu](docs/assets/hyprglass-glass-menu.png)
+
+Isolated installer demonstration using the real `install.sh`:
+
+![Installer demo](docs/assets/hyprglass-install-demo.png)
+
+## Requirements
+
+Hyprglass targets Arch Linux. See [PACKAGES.md](PACKAGES.md) for the complete,
+feature-by-feature package list. The custom menus require **GTK 3,
+PyGObject and GtkLayerShell**.
+
+After installing dependencies, check the current machine with:
 
 ```sh
-sudo pacman -S --needed hyprland waybar nwg-dock-hyprland nwg-displays swaybg swaync hyprlock wl-clipboard cliphist jq curl brightnessctl wpctl networkmanager polkit-gnome desktop-file-utils gtk4
+./scripts/check-dependencies.sh
 ```
 
-Opcionales:
+## Install
 
-```sh
-sudo pacman -S --needed kitty nautilus papirus-icon-theme ttf-jetbrains-mono-nerd wayvnc
-```
-
-`wayvnc` solo hace falta si vas a usar el monitor virtual/tablet-como-segundo-monitor.
-
-Para los limites de carga de bateria se usa TLP. Si no usas TLP, puedes borrar scripts/battery-mode.sh y quitar el click de bateria en Waybar.
-
-## Instalacion
-
-Clona el repo y ejecuta:
+Review the repository before installing, then run:
 
 ```sh
 ./install.sh
 ```
 
-El instalador hace backup de tus configs actuales antes de copiar estas.
+The installer:
 
-Tambien instala overrides en `~/.local/share/applications` para dejar Nautilus/Archivos como gestor de archivos visible y ocultar Nemo, Thunar y Dolphin del launcher.
+1. creates a timestamped backup under `~/.hyprglass-backup-*`;
+2. copies the selected Hyprland, Waybar and GTK preferences;
+3. installs the optional battery helper under `~/scripts`.
 
-## Clima
+It replaces the corresponding configuration directories after saving the
+backup. It does **not** install system packages, enable services or alter TLP
+until the battery helper is invoked explicitly.
 
-El script de clima usa wttr.in. Por defecto usa Caracas como ejemplo publico.
+## Configuration
 
-Puedes cambiarlo sin editar el script agregando variables en tu sesion o en Hyprland:
+### Default applications
 
-```conf
-env = WEATHER_LOCATION,Caracas,Venezuela
-env = WEATHER_LOCATION_PRETTY,Caracas, VE
+Edit these variables near the top of `.config/hypr/hyprland.lua`:
+
+```lua
+local terminal = "kitty"
+local fileManager = "thunar"
+local browser = "firefox"
 ```
 
-Usa el formato que entiende wttr.in, por ejemplo Madrid,Spain o Buenos+Aires,Argentina.
+### Keyboard layouts and hardware keys
 
-## Seguridad
+The default layouts are US and Latin American Spanish, toggled with
+`SUPER + Space`. The media-key mappings were tested on a ThinkPad E14. Keys
+reported as `XF86Display`, `XF86NotificationCenter` or `XF86Favorites` may be
+different or absent on other hardware.
 
-Este repo esta pensado para ser publico. No debe contener:
+The Fn-row `XF86Favorites` key toggles Bluetooth. This is different from
+`SUPER + F12`, which controls the optional tablet output.
 
-- claves SSH
-- tokens o API keys
-- archivos .env
-- configuraciones de WiFi/VPN
-- accesos `.desktop` personales de navegadores o web apps
-- caches, logs o historiales
-- backups completos del home
+### Tablet monitor
 
-Antes de publicar, ejecuta:
+Install WayVNC, then press `SUPER + F12` to create or remove the headless
+output. Workspace 10 is assigned to it; use `SUPER + 0` and
+`SUPER + SHIFT + 0` to focus it or move a window there.
+
+Defaults can be overridden in the Hyprland session:
 
 ```sh
-rg -n --hidden -i "token|api[_-]?key|secret|password|passwd|bearer|authorization|private[_-]?key|ssh|github|ghp_|sk-|BEGIN .*PRIVATE KEY|webhook|vpn|wifi|ssid" .
+export HYPRGLASS_PRIMARY_MONITOR=eDP-1
+export HYPRGLASS_TABLET_MODE=1280x800@60
+export HYPRGLASS_TABLET_POSITION=1920x0
 ```
 
-Si aparece algo sensible, no publiques hasta limpiarlo.
+WayVNC is started only when the tablet output is enabled, and Hyprglass passes
+the detected headless output explicitly. WayVNC listens on localhost by
+default, so remote access requires your own authenticated WayVNC configuration
+and appropriate firewall or private-network rules. Hyprglass deliberately does
+not ship usernames, passwords, certificates or a public-listener default.
+
+### Weather
+
+The Waybar script uses wttr.in and defaults to Caracas as a public example:
+
+```sh
+export WEATHER_LOCATION='Caracas,Venezuela'
+export WEATHER_LOCATION_PRETTY='Caracas, VE'
+```
+
+### Battery thresholds
+
+The battery menu calls TLP through `~/scripts/battery-mode.sh`. This feature is
+optional and works only when the laptop firmware and TLP support charge
+thresholds. The helper discovers the first power-supply device of type
+`Battery`; set `HYPRGLASS_BATTERY_PATH` to override it.
+
+The helper uses `sudo` and writes only
+`/etc/tlp.d/99-hyprglass-battery.conf`. Review it before selecting a mode.
+
+## Validation
+
+```sh
+./tests/run.sh
+```
+
+The checks parse every shell/Python file, validate Waybar JSON, reject known
+personal paths and stale components, exercise the installer in an isolated
+home directory, and verify that backups preserve the previous content.
+
+## Security and privacy
+
+Do not commit credentials, Wi-Fi/VPN profiles, browser PWAs, logs, shell
+history or full home-directory backups. The repository includes only public
+configuration. Network passwords are handled by NetworkManager's secret agent,
+not passed in command-line arguments.
+
+Security reports should follow [SECURITY.md](SECURITY.md). Contributions are
+described in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+MIT — see [LICENSE](LICENSE).

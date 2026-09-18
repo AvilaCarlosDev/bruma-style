@@ -13,8 +13,13 @@ def load_entries():
 
 
 def copy_entry(line):
-    decode = subprocess.run(["cliphist", "decode"], input=line, capture_output=True, text=True)
-    subprocess.run(["wl-copy"], input=decode.stdout.encode())
+    decode = subprocess.run(
+        ["cliphist", "decode"],
+        input=line.encode(),
+        capture_output=True,
+        check=True,
+    )
+    subprocess.run(["wl-copy"], input=decode.stdout, check=True)
 
 
 class ClipboardMenu:

@@ -7,8 +7,11 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Añadido / Added
 - Pruebas unitarias en `tests/python/` para los menús de audio, batería, red,
-  portapapeles y fondos de pantalla (GTK y comandos del sistema simulados). /
-  Unit tests for the audio, battery, network, clipboard and wallpaper menus.
+  Bluetooth, energía, portapapeles y fondos de pantalla, y para `layout-signal`
+  (GTK y comandos del sistema simulados). / Unit tests for the menus and
+  `layout-signal`.
+- Pruebas de shell para `weather.sh` y los scripts de la tableta en
+  `tests/run.sh`. / Shell tests for `weather.sh` and the tablet scripts.
 - Configuración de `ruff` y `pytest` en `pyproject.toml`; dependencias de
   desarrollo fijadas en `requirements-dev.txt`. / `ruff` and `pytest`
   configuration; pinned development dependencies.
@@ -18,7 +21,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `CODE_OF_CONDUCT` y plantillas de issues y PR. / Bilingual documentation,
   code of conduct, and issue/PR templates.
 
+### Seguridad / Security
+- Las notificaciones escapan el marcado de nombres que controlan terceros (SSID,
+  dispositivos Bluetooth, archivos): antes un SSID como `<a href=...>` llegaba a
+  `swaync` como enlace. / Notifications now escape markup in third-party names.
+- `weather.sh`: la ubicación se codifica en la URL (`/`, `?` o `#` ya no la
+  alteran) y la caché deja de caer en `/tmp` compartido. / The location is
+  percent-encoded and the cache no longer falls back to a shared `/tmp`.
+- Scripts de la tableta: exigen `XDG_RUNTIME_DIR` para el PID y el registro de
+  WayVNC en lugar de usar `/tmp`. / Tablet scripts require `XDG_RUNTIME_DIR`.
+
 ### Corregido / Fixed
+- `layout-signal.py` se reestructura en funciones (`socket_path`, `listen`,
+  `main`): ya no se conecta al importarse, informa si faltan variables de
+  entorno y descarta flujos sin salto de línea que crecerían sin límite. /
+  Restructured into functions; no side effects on import.
 - `network_menu`: los SSID y nombres de perfil con `:` o `\` se interpretaban
   mal porque `nmcli -t` los escapa; ahora se separan respetando el escape. /
   SSIDs and profile names containing `:` or `\` were parsed incorrectly.

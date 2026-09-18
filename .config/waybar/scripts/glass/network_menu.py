@@ -20,30 +20,49 @@ def wifi_enabled():
     return nmcli("-g", "WIFI", "general") == "enabled"
 
 
+def split_terse(line):
+    # nmcli -t escapa ":" y "\" dentro de cada campo (un SSID puede llevarlos),
+    # así que separar con str.split rompe los nombres que los contienen.
+    fields, current, escaped = [], [], False
+    for char in line:
+        if escaped:
+            current.append(char)
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == ":":
+            fields.append("".join(current))
+            current = []
+        else:
+            current.append(char)
+    fields.append("".join(current))
+    return fields
+
+
 def active_ssid():
     for line in nmcli("-t", "-f", "ACTIVE,SSID", "dev", "wifi").splitlines():
-        parts = line.split(":", 1)
-        if len(parts) == 2 and parts[0] == "yes":
-            return parts[1]
+        fields = split_terse(line)
+        if len(fields) == 2 and fields[0] == "yes":
+            return fields[1]
     return None
 
 
 def saved_connections():
     names = set()
     for line in nmcli("-t", "-f", "NAME,TYPE", "connection", "show").splitlines():
-        parts = line.rsplit(":", 1)
-        if len(parts) == 2 and parts[1] == "802-11-wireless":
-            names.add(parts[0])
+        fields = split_terse(line)
+        if len(fields) == 2 and fields[1] == "802-11-wireless":
+            names.add(fields[0])
     return names
 
 
 def scan():
     seen = {}
     for line in nmcli("-t", "-f", "SSID,SECURITY,SIGNAL", "dev", "wifi", "list").splitlines():
-        parts = line.split(":")
-        if len(parts) < 3 or not parts[0] or parts[0] in seen:
+        fields = split_terse(line)
+        if len(fields) != 3 or not fields[0] or fields[0] in seen:
             continue
-        seen[parts[0]] = (parts[1], parts[2])
+        seen[fields[0]] = (fields[1], fields[2])
     return seen
 
 

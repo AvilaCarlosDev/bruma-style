@@ -7,9 +7,16 @@ from common import GlassPopup, make_list, add_row, bind_activate, sep, section_l
 from gi.repository import Gtk
 
 
+def _output(cmd):
+    # Sin wpctl/pactl el popup debe abrirse igual, con valores neutros.
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True).stdout.strip()
+    except FileNotFoundError:
+        return ""
+
+
 def get_volume():
-    out = subprocess.run(["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"],
-                          capture_output=True, text=True).stdout.strip()
+    out = _output(["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"])
     muted = "MUTED" in out
     try:
         pct = round(float(out.split()[1]) * 100)
@@ -27,9 +34,7 @@ def toggle_mute():
 
 
 def get_mic_muted():
-    out = subprocess.run(["wpctl", "get-volume", "@DEFAULT_AUDIO_SOURCE@"],
-                          capture_output=True, text=True).stdout.strip()
-    return "MUTED" in out
+    return "MUTED" in _output(["wpctl", "get-volume", "@DEFAULT_AUDIO_SOURCE@"])
 
 
 def toggle_mic_mute():
@@ -37,10 +42,8 @@ def toggle_mic_mute():
 
 
 def default_sink_desc():
-    name = subprocess.run(["pactl", "get-default-sink"],
-                           capture_output=True, text=True).stdout.strip()
-    listing = subprocess.run(["pactl", "list", "sinks"],
-                              capture_output=True, text=True).stdout
+    name = _output(["pactl", "get-default-sink"])
+    listing = _output(["pactl", "list", "sinks"])
     in_sink = False
     for line in listing.splitlines():
         if line.startswith("Sink #"):

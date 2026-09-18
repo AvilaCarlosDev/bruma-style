@@ -1,79 +1,88 @@
 # hyprglass
 
-Hyprglass is the public, portable subset of my Arch Linux + Hyprland desktop.
-Its visual language uses translucent surfaces, rounded geometry and custom GTK
-menus. It is not a macOS clone and it does not attempt to reproduce another
-desktop environment.
+[English](README.en.md) · **Español**
 
-> **Current scope:** tested on Arch Linux with Hyprland 0.56.2 and a ThinkPad
-> E14. Hardware keys, battery charge thresholds and monitor names vary between
-> computers; the relevant limitations are documented below.
+[![CI](https://github.com/AvilaCarlosDev/hyprglass/actions/workflows/ci.yml/badge.svg)](https://github.com/AvilaCarlosDev/hyprglass/actions/workflows/ci.yml)
+[![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
+![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?logo=archlinux&logoColor=white)
+![Hyprland](https://img.shields.io/badge/Hyprland-0.56.2-00a8a8)
 
-## What is included
+Hyprglass es el subconjunto público y portable de mi escritorio Arch Linux +
+Hyprland. Su lenguaje visual usa superficies translúcidas, geometría redondeada
+y menús GTK propios. No es un clon de macOS ni pretende reproducir otro entorno
+de escritorio.
 
-- A native Hyprland Lua configuration with gaps, blur, rounded corners,
-  animations and keyboard/mouse bindings.
-- A floating Waybar with keyboard-layout, media, weather, network, Bluetooth,
-  audio, CPU, memory, battery, notifications and power modules.
-- Hand-built GTK 3 + GtkLayerShell menus for applications, power, network,
-  audio, battery, clipboard, Bluetooth and wallpapers.
-- An optional, on-demand headless output with WayVNC for using a tablet as a
-  second screen.
-- A backup-first installer and automated checks for the public configuration.
+> **Alcance actual:** probado en Arch Linux con Hyprland 0.56.2 y una ThinkPad
+> E14. Las teclas de hardware, los umbrales de carga de batería y los nombres de
+> monitor cambian entre equipos; las limitaciones relevantes están documentadas
+> más abajo.
 
-The public repository intentionally excludes machine-specific PWAs, private
-network profiles, Shimeji processes, absolute home paths, caches and local
-backups.
+## Qué incluye
 
-## Screenshots
+- Configuración nativa de Hyprland en Lua con márgenes, desenfoque, esquinas
+  redondeadas, animaciones y atajos de teclado y ratón.
+- Una Waybar flotante con módulos de distribución de teclado, multimedia, clima,
+  red, Bluetooth, audio, CPU, memoria, batería, notificaciones y energía.
+- Menús GTK 3 + GtkLayerShell hechos a mano para aplicaciones, energía, red,
+  audio, batería, portapapeles, Bluetooth y fondos de pantalla.
+- Una salida virtual opcional, bajo demanda, con WayVNC para usar una tableta
+  como segunda pantalla.
+- Un instalador que respalda antes de escribir y comprobaciones automáticas de
+  la configuración pública.
+
+El repositorio público excluye a propósito PWAs propias de cada equipo, perfiles
+de red privados, procesos Shimeji, rutas absolutas del home, cachés y copias
+de seguridad locales.
+
+## Capturas
 
 Waybar:
 
 ![Waybar](docs/assets/hyprglass-waybar.png)
 
-One of the custom glass menus:
+Uno de los menús de vidrio:
 
-![Power menu](docs/assets/hyprglass-glass-menu.png)
+![Menú de energía](docs/assets/hyprglass-glass-menu.png)
 
-Isolated installer demonstration using the real `install.sh`:
+Demostración del instalador real `install.sh` en un entorno aislado:
 
-![Installer demo](docs/assets/hyprglass-install-demo.png)
+![Demostración del instalador](docs/assets/hyprglass-install-demo.png)
 
-## Requirements
+## Requisitos
 
-Hyprglass targets Arch Linux. See [PACKAGES.md](PACKAGES.md) for the complete,
-feature-by-feature package list. The custom menus require **GTK 3,
-PyGObject and GtkLayerShell**.
+Hyprglass apunta a Arch Linux. La lista completa de paquetes, función por
+función, está en [PACKAGES.md](PACKAGES.md). Los menús propios requieren
+**GTK 3, PyGObject y GtkLayerShell**.
 
-After installing dependencies, check the current machine with:
+Tras instalar las dependencias, comprueba el equipo actual con:
 
 ```sh
 ./scripts/check-dependencies.sh
 ```
 
-## Install
+## Instalación
 
-Review the repository before installing, then run:
+Revisa el repositorio antes de instalar y luego ejecuta:
 
 ```sh
 ./install.sh
 ```
 
-The installer:
+El instalador:
 
-1. creates a timestamped backup under `~/.hyprglass-backup-*`;
-2. copies the selected Hyprland, Waybar and GTK preferences;
-3. installs the optional battery helper under `~/scripts`.
+1. crea una copia de seguridad con fecha en `~/.hyprglass-backup-*`;
+2. copia las preferencias elegidas de Hyprland, Waybar y GTK;
+3. instala el ayudante opcional de batería en `~/scripts`.
 
-It replaces the corresponding configuration directories after saving the
-backup. It does **not** install system packages, enable services or alter TLP
-until the battery helper is invoked explicitly.
+Reemplaza los directorios de configuración correspondientes después de guardar
+la copia. **No** instala paquetes del sistema, no activa servicios y no toca TLP
+hasta que invoques el ayudante de batería de forma explícita.
 
-## Configuration
+## Configuración
 
-### Default applications
+### Aplicaciones predeterminadas
 
-Edit these variables near the top of `.config/hypr/hyprland.lua`:
+Edita estas variables al inicio de `.config/hypr/hyprland.lua`:
 
 ```lua
 local terminal = "kitty"
@@ -81,23 +90,24 @@ local fileManager = "thunar"
 local browser = "firefox"
 ```
 
-### Keyboard layouts and hardware keys
+### Distribuciones de teclado y teclas de hardware
 
-The default layouts are US and Latin American Spanish, toggled with
-`SUPER + Space`. The media-key mappings were tested on a ThinkPad E14. Keys
-reported as `XF86Display`, `XF86NotificationCenter` or `XF86Favorites` may be
-different or absent on other hardware.
+Las distribuciones por defecto son US y español latinoamericano, con cambio
+mediante `SUPER + Space`. Los atajos de teclas multimedia se probaron en una
+ThinkPad E14. Las teclas que el sistema reporta como `XF86Display`,
+`XF86NotificationCenter` o `XF86Favorites` pueden ser distintas o no existir en
+otro hardware.
 
-The Fn-row `XF86Favorites` key toggles Bluetooth. This is different from
-`SUPER + F12`, which controls the optional tablet output.
+La tecla `XF86Favorites` de la fila Fn activa o desactiva Bluetooth. Es
+independiente de `SUPER + F12`, que controla la salida opcional de la tableta.
 
-### Tablet monitor
+### Monitor de tableta
 
-Install WayVNC, then press `SUPER + F12` to create or remove the headless
-output. Workspace 10 is assigned to it; use `SUPER + 0` and
-`SUPER + SHIFT + 0` to focus it or move a window there.
+Instala WayVNC y pulsa `SUPER + F12` para crear o quitar la salida virtual. El
+espacio de trabajo 10 queda asignado a ella; usa `SUPER + 0` y
+`SUPER + SHIFT + 0` para enfocarlo o mover una ventana allí.
 
-Defaults can be overridden in the Hyprland session:
+Los valores por defecto se pueden cambiar en la sesión de Hyprland:
 
 ```sh
 export HYPRGLASS_PRIMARY_MONITOR=eDP-1
@@ -105,51 +115,73 @@ export HYPRGLASS_TABLET_MODE=1280x800@60
 export HYPRGLASS_TABLET_POSITION=1920x0
 ```
 
-WayVNC is started only when the tablet output is enabled, and Hyprglass passes
-the detected headless output explicitly. WayVNC listens on localhost by
-default, so remote access requires your own authenticated WayVNC configuration
-and appropriate firewall or private-network rules. Hyprglass deliberately does
-not ship usernames, passwords, certificates or a public-listener default.
+WayVNC solo se inicia cuando la salida de la tableta está activa, y Hyprglass le
+pasa de forma explícita la salida virtual detectada. WayVNC escucha en localhost
+por defecto, así que el acceso remoto requiere tu propia configuración
+autenticada de WayVNC y reglas de cortafuegos o de red privada adecuadas.
+Hyprglass no incluye usuarios, contraseñas ni certificados, ni un modo de
+escucha pública por defecto.
 
-### Weather
+### Clima
 
-The Waybar script uses wttr.in and defaults to Caracas as a public example:
+El script de Waybar usa wttr.in y toma Caracas como ejemplo público:
 
 ```sh
 export WEATHER_LOCATION='Caracas,Venezuela'
 export WEATHER_LOCATION_PRETTY='Caracas, VE'
 ```
 
-### Battery thresholds
+### Umbrales de batería
 
-The battery menu calls TLP through `~/scripts/battery-mode.sh`. This feature is
-optional and works only when the laptop firmware and TLP support charge
-thresholds. The helper discovers the first power-supply device of type
-`Battery`; set `HYPRGLASS_BATTERY_PATH` to override it.
+El menú de batería llama a TLP mediante `~/scripts/battery-mode.sh`. Es opcional
+y solo funciona si el firmware del portátil y TLP admiten umbrales de carga. El
+ayudante detecta el primer dispositivo de energía de tipo `Battery`; define
+`HYPRGLASS_BATTERY_PATH` para forzar otro.
 
-The helper uses `sudo` and writes only
-`/etc/tlp.d/99-hyprglass-battery.conf`. Review it before selecting a mode.
+El ayudante usa `sudo` y escribe únicamente
+`/etc/tlp.d/99-hyprglass-battery.conf`. Revísalo antes de elegir un modo.
 
-## Validation
+## Validación
 
 ```sh
 ./tests/run.sh
 ```
 
-The checks parse every shell/Python file, validate Waybar JSON, reject known
-personal paths and stale components, exercise the installer in an isolated
-home directory, and verify that backups preserve the previous content.
+Las comprobaciones analizan cada archivo de shell y Python, validan el JSON de
+Waybar, rechazan rutas personales y componentes obsoletos, ejercitan el
+instalador en un home aislado y verifican que las copias conserven el contenido
+previo.
 
-## Security and privacy
+Los menús en Python tienen sus propias pruebas unitarias (GTK y los comandos del
+sistema se simulan, por lo que no hace falta pantalla):
 
-Do not commit credentials, Wi-Fi/VPN profiles, browser PWAs, logs, shell
-history or full home-directory backups. The repository includes only public
-configuration. Network passwords are handled by NetworkManager's secret agent,
-not passed in command-line arguments.
+```sh
+pip install -r requirements-dev.txt
+ruff check .
+pytest
+```
 
-Security reports should follow [SECURITY.md](SECURITY.md). Contributions are
-described in [CONTRIBUTING.md](CONTRIBUTING.md).
+El CI ejecuta todo lo anterior, además de ShellCheck, un escaneo de secretos
+(gitleaks) y una comprobación que rechaza marcas de agua de IA en archivos y
+mensajes de commit.
 
-## License
+## Seguridad y privacidad
 
-MIT — see [LICENSE](LICENSE).
+No subas credenciales, perfiles Wi-Fi/VPN, PWAs del navegador, registros,
+historial de shell ni copias completas del directorio personal. El repositorio
+solo incluye configuración pública. Las contraseñas de red las gestiona el agente
+de secretos de NetworkManager, no se pasan como argumentos de línea de comandos.
+
+Los reportes de seguridad siguen [SECURITY.md](SECURITY.md). Las contribuciones
+se describen en [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Créditos
+
+Creado y mantenido por [Carlos Avila](https://github.com/AvilaCarlosDev).
+Desarrollado con el apoyo de Claude (Anthropic) como asistente de revisión de
+arquitectura y redacción de pruebas; las decisiones de diseño y la revisión
+final son del autor. El historial del proyecto está en [CHANGELOG.md](CHANGELOG.md).
+
+## Licencia
+
+MIT — ver [LICENSE](LICENSE).

@@ -1,5 +1,7 @@
 # Dependencies
 
+**English** · [Español](PACKAGES.md)
+
 Hyprglass is developed and tested on Arch Linux. The package groups below
 describe what the repository actually calls; they are not a distro-agnostic
 installer.
@@ -46,3 +48,10 @@ under `~/.cache/wallpaper-selector`.
 
 Run `./scripts/check-dependencies.sh` after installing packages. It reports
 missing required commands separately from optional features.
+
+## Development
+
+```sh
+pip install -r requirements-dev.txt   # pytest and ruff
+sudo pacman -S --needed shellcheck ripgrep
+```

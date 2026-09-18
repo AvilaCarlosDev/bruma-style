@@ -1,0 +1,32 @@
+name: Reporte de error / Bug report
+description: Algo no funciona como debería / Something does not work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: que-pasa
+    attributes:
+      label: Qué ocurre / What happens
+      description: Describe el problema y lo que esperabas / Describe the problem and what you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducirlo / Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: entorno
+    attributes:
+      label: Entorno / Environment
+      description: Distribución, versión de Hyprland y hardware / Distro, Hyprland version, hardware.
+      placeholder: "Arch Linux, Hyprland 0.56.2, ThinkPad E14"
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacidad
+    attributes:
+      label: Privacidad / Privacy
+      options:
+        - label: No incluí contraseñas, tokens, SSID ni rutas personales / I did not include passwords, tokens, SSIDs or personal paths
+          required: true

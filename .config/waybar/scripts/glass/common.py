@@ -5,7 +5,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 gi.require_version("GtkLayerShell", "0.1")
 
-from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
+from gi.repository import Gtk, Gdk, GtkLayerShell
 
 THEME_CSS = __file__.rsplit("/", 1)[0] + "/theme.css"
 

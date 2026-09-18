@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import html
 import re
 import subprocess
 import sys
@@ -18,7 +19,7 @@ def btctl(*args, timeout=None):
 
 
 def notify(message):
-    subprocess.Popen(["notify-send", "Bluetooth", message])
+    subprocess.Popen(["notify-send", "Bluetooth", html.escape(message, quote=False)])
 
 
 def power_enabled():

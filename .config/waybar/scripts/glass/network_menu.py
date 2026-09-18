@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import html
 import subprocess
 import sys
 import threading
@@ -13,7 +14,7 @@ def nmcli(*args):
 
 
 def notify(msg):
-    subprocess.Popen(["notify-send", "Wi-Fi", msg])
+    subprocess.Popen(["notify-send", "Wi-Fi", html.escape(msg, quote=False)])
 
 
 def wifi_enabled():

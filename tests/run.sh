@@ -261,6 +261,53 @@ else
   fail "tablet stop terminates its WayVNC process and removes the output"
 fi
 
+# --- weather.sh: la ubicación es dato del usuario y debe ir codificada en la URL ---
+weather_bin="$tmp_root/weather-bin"
+weather_log="$tmp_root/weather-curl.log"
+mkdir -p "$weather_bin" "$tmp_root/weather-home"
+cat > "$weather_bin/curl" <<'SH'
+#!/usr/bin/env bash
+printf '%s\n' "${@: -1}" >> "${HYPRGLASS_TEST_CURL_LOG:?}"
+SH
+chmod +x "$weather_bin/curl"
+
+: > "$weather_log"
+PATH="$weather_bin:$PATH" \
+  XDG_RUNTIME_DIR="$tmp_root/weather-home" \
+  HYPRGLASS_TEST_CURL_LOG="$weather_log" \
+  WEATHER_LOCATION='Ciudad de Panamá/../x?y=1#z' \
+  .config/waybar/scripts/weather.sh >/dev/null 2>&1 || true
+expect "weather location is percent-encoded in the request URL" \
+  grep -qxF 'https://wttr.in/Ciudad%20de%20Panam%C3%A1%2F..%2Fx%3Fy%3D1%23z?format=j1' "$weather_log"
+
+: > "$weather_log"
+PATH="$weather_bin:$PATH" \
+  XDG_RUNTIME_DIR="$tmp_root/weather-home" \
+  HYPRGLASS_TEST_CURL_LOG="$weather_log" \
+  .config/waybar/scripts/weather.sh >/dev/null 2>&1 || true
+expect "weather default location still resolves to Caracas" \
+  grep -qxF 'https://wttr.in/Caracas%2CVenezuela?format=j1' "$weather_log"
+
+no_runtime_home="$tmp_root/no-runtime-home"
+mkdir -p "$no_runtime_home"
+env -u XDG_RUNTIME_DIR -u XDG_CACHE_HOME HOME="$no_runtime_home" PATH="$weather_bin:$PATH" \
+  HYPRGLASS_TEST_CURL_LOG="$weather_log" \
+  .config/waybar/scripts/weather.sh >/dev/null 2>&1 || true
+expect "weather cache falls back to a user-owned directory, never a shared /tmp path" \
+  test -d "$no_runtime_home/.cache/waybar-weather"
+
+# --- scripts de la tableta: sin XDG_RUNTIME_DIR no deben usar /tmp compartido ---
+for script in start-tablet-monitor stop-tablet-monitor; do
+  if env -u XDG_RUNTIME_DIR PATH="$fake_bin:$PATH" \
+       .config/hypr/scripts/$script.sh 2>"$tmp_root/$script.err"; then
+    fail "$script refuses to run without XDG_RUNTIME_DIR"
+  elif rg 'XDG_RUNTIME_DIR' "$tmp_root/$script.err" >/dev/null; then
+    pass "$script refuses to run without XDG_RUNTIME_DIR"
+  else
+    fail "$script refuses to run without XDG_RUNTIME_DIR"
+  fi
+done
+
 if (( failures > 0 )); then
   printf '\n%d check(s) failed.\n' "$failures" >&2
   exit 1

@@ -6,6 +6,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Sin publicar / Unreleased]
 
 ### Añadido / Added
+- Dependabot vigila también `requirements-dev.txt` (pip). / Dependabot now also
+  tracks `requirements-dev.txt`.
 - Pruebas unitarias en `tests/python/` para los menús de audio, batería, red,
   Bluetooth, energía, portapapeles y fondos de pantalla, y para `layout-signal`
   (GTK y comandos del sistema simulados). / Unit tests for the menus and

@@ -175,6 +175,15 @@ hl.layer_rule({
     ignore_alpha = true,
 })
 
+-- Menús GTK de vidrio (namespace de glass/common.py). ignore_alpha tiene que ser un
+-- número: con `true` el desenfoque no se aplica a superficies translúcidas.
+hl.layer_rule({
+    name = "blur-glass-menu",
+    match = { namespace = "glass-menu" },
+    blur = true,
+    ignore_alpha = 0.1,
+})
+
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())

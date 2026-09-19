@@ -55,4 +55,5 @@ opcionales.
 ```sh
 pip install -r requirements-dev.txt   # pytest y ruff
 sudo pacman -S --needed shellcheck ripgrep
+sudo pacman -S --needed xorg-server-xvfb   # pruebas de interfaz con GTK real (tests/gtk)
 ```

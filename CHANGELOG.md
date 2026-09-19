@@ -10,6 +10,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Bluetooth, energía, portapapeles y fondos de pantalla, y para `layout-signal`
   (GTK y comandos del sistema simulados). / Unit tests for the menus and
   `layout-signal`.
+- Pruebas de interfaz con GTK real en `tests/gtk/` (54): `GlassPopup`, `Launcher`
+  y el `main()` de los siete menús, con un trabajo de CI bajo Xvfb. / UI tests
+  with real GTK covering `GlassPopup`, `Launcher` and every menu's `main()`.
 - Pruebas de shell para `weather.sh` y los scripts de la tableta en
   `tests/run.sh`. / Shell tests for `weather.sh` and the tablet scripts.
 - Configuración de `ruff` y `pytest` en `pyproject.toml`; dependencias de
@@ -32,6 +35,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   WayVNC en lugar de usar `/tmp`. / Tablet scripts require `XDG_RUNTIME_DIR`.
 
 ### Corregido / Fixed
+- `bluetooth_menu`: los dispositivos conectados no respondían al clic, así que no
+  se podían desconectar desde el menú; faltaba `bind_activate` en su lista. /
+  Connected devices did not react to clicks, so they could not be disconnected.
 - `layout-signal.py` se reestructura en funciones (`socket_path`, `listen`,
   `main`): ya no se conecta al importarse, informa si faltan variables de
   entorno y descarta flujos sin salto de línea que crecerían sin límite. /

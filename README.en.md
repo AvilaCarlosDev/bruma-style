@@ -147,8 +147,8 @@ The checks parse every shell/Python file, validate Waybar JSON, reject known
 personal paths and stale components, exercise the installer in an isolated
 home directory, and verify that backups preserve the previous content.
 
-The Python menus have their own unit tests (GTK and the system commands are
-simulated, so no display is needed):
+The Python menus have two test layers. The logic is tested without GTK or a
+display (GTK and the system commands are simulated):
 
 ```sh
 pip install -r requirements-dev.txt
@@ -156,7 +156,14 @@ ruff check .
 pytest
 ```
 
-CI runs all of the above, plus ShellCheck, a secret scan (gitleaks) and a
+The UI is tested with real GTK by building each menu and activating its rows
+without showing any window. It needs PyGObject and Xvfb (or a display):
+
+```sh
+xvfb-run -a python3 -m pytest tests/gtk
+```
+
+CI runs all of the above (UI tests under Xvfb), plus ShellCheck, a secret scan (gitleaks) and a
 check that rejects AI watermarks in files and commit messages.
 
 ## Security and privacy

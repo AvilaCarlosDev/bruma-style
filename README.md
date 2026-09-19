@@ -152,8 +152,8 @@ Waybar, rechazan rutas personales y componentes obsoletos, ejercitan el
 instalador en un home aislado y verifican que las copias conserven el contenido
 previo.
 
-Los menús en Python tienen sus propias pruebas unitarias (GTK y los comandos del
-sistema se simulan, por lo que no hace falta pantalla):
+Los menús en Python tienen dos capas de pruebas. La lógica se prueba sin GTK ni
+pantalla (GTK y los comandos del sistema se simulan):
 
 ```sh
 pip install -r requirements-dev.txt
@@ -161,7 +161,14 @@ ruff check .
 pytest
 ```
 
-El CI ejecuta todo lo anterior, además de ShellCheck, un escaneo de secretos
+La interfaz se prueba con GTK real, construyendo cada menú y accionando sus
+filas sin mostrar ninguna ventana. Requiere PyGObject y Xvfb (o un display):
+
+```sh
+xvfb-run -a python3 -m pytest tests/gtk
+```
+
+El CI ejecuta todo lo anterior (las pruebas de interfaz bajo Xvfb), además de ShellCheck, un escaneo de secretos
 (gitleaks) y una comprobación que rechaza marcas de agua de IA en archivos y
 mensajes de commit.
 

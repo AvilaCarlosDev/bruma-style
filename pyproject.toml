@@ -14,7 +14,7 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 # Los menús añaden su carpeta a sys.path antes de importar `common`.
 ".config/waybar/scripts/glass/*.py" = ["E402"]
-"tests/python/*.py" = ["S101", "S108"]
+"tests/**/*.py" = ["S101", "S108"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests/python"]

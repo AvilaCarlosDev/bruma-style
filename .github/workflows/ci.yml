@@ -46,6 +46,20 @@ jobs:
       - name: Unit tests (pytest)
         run: pytest
 
+  gtk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install GTK test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes xvfb python3-gi gir1.2-gtk-3.0 gir1.2-gtklayershell-0.1 python3-pytest
+
+      - name: UI tests (real GTK under Xvfb)
+        run: xvfb-run -a python3 -m pytest tests/gtk -p no:cacheprovider
+
   secrets:
     runs-on: ubuntu-latest
     steps:

@@ -106,6 +106,7 @@ def main():
         sep_row.set_selectable(False)
         sep_row.add(sep())
         connected_list.add(sep_row)
+    bind_activate(connected_list, popup)
     popup.body.pack_start(connected_list, False, False, 0)
 
     popup.body.pack_start(section_label("DISPOSITIVOS EMPAREJADOS"), False, False, 0)

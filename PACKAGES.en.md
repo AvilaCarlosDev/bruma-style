@@ -54,4 +54,5 @@ missing required commands separately from optional features.
 ```sh
 pip install -r requirements-dev.txt   # pytest and ruff
 sudo pacman -S --needed shellcheck ripgrep
+sudo pacman -S --needed xorg-server-xvfb   # UI tests with real GTK (tests/gtk)
 ```

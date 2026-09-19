@@ -22,7 +22,8 @@ Antes de abrir un pull request:
 6. indica qué hardware y qué versión de Hyprland usaste en las pruebas manuales;
 7. todo cambio de lógica en los menús de Python debe llevar su prueba en
    `tests/python/`, incluidos los casos límite (comando ausente, salida vacía,
-   datos corruptos).
+   datos corruptos); los cambios de interfaz, en `tests/gtk/`
+   (`xvfb-run -a python3 -m pytest tests/gtk`).
 
 La documentación pública se mantiene en español e inglés; si cambias una,
 actualiza la otra. El CI rechaza marcas de agua de IA en archivos y mensajes de
@@ -51,7 +52,8 @@ Before opening a pull request:
 6. state which hardware and Hyprland version were used for manual testing;
 7. any logic change in the Python menus must come with a test in
    `tests/python/`, including edge cases (missing command, empty output,
-   corrupt data).
+   corrupt data); UI changes go in `tests/gtk/`
+   (`xvfb-run -a python3 -m pytest tests/gtk`).
 
 Public documentation is kept in Spanish and English; if you change one, update
 the other. CI rejects AI watermarks in files and commit messages (for example

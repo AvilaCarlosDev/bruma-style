@@ -48,6 +48,11 @@ expect_no_match "active config has no rofi/wofi executable dependency" 'rofi\s+-
   .config/hypr/hyprland.lua .config/waybar/config .config/waybar/scripts scripts/battery-mode.sh
 expect_no_match "legacy always-on tablet setup removed" 'setup-headless-monitor\.sh' \
   .config/hypr/hyprland.lua .config/hypr/scripts
+glass_namespace="$(rg -o --no-filename 'set_namespace\(self, "([^"]+)"\)' -r '$1' .config/waybar/scripts/glass/common.py | head -1)"
+expect "glass menus declare a layer namespace" test -n "$glass_namespace"
+# ignore_alpha = true no desenfoca una superficie translúcida (se toma como umbral 1.0): tiene que ser un número.
+expect "glass menus have a compositor blur rule with a numeric ignore_alpha" \
+  rg -Uq "namespace = \"${glass_namespace}\" \},\s*blur = true,\s*ignore_alpha = 0\.[0-9]+" .config/hypr/hyprland.lua
 expect_no_match "no personal Brave PWA identifier" 'brave-[a-z]{32}-Default' .config/hypr/hyprland.lua
 expect_no_match "Waybar has no personal web-app rewrites" 'chrome-[A-Za-z0-9_.-]+-Default' \
   .config/waybar/config

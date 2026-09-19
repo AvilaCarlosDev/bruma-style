@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def battery(load_menu, monkeypatch):
-    monkeypatch.delenv("HYPRGLASS_BATTERY_PATH", raising=False)
+    monkeypatch.delenv("VAHO_BATTERY_PATH", raising=False)
     return load_menu("battery_menu")
 
 
@@ -17,7 +17,7 @@ def _fuente(raiz, nombre, tipo, **archivos):
 
 
 def test_battery_path_respeta_la_variable_de_entorno(battery, monkeypatch, tmp_path):
-    monkeypatch.setenv("HYPRGLASS_BATTERY_PATH", str(tmp_path))
+    monkeypatch.setenv("VAHO_BATTERY_PATH", str(tmp_path))
     assert battery.battery_path() == str(tmp_path)
 
 

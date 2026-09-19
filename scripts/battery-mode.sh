@@ -3,7 +3,7 @@
 set -euo pipefail
 
 MODE="${1:-}"
-battery_path="${HYPRGLASS_BATTERY_PATH:-}"
+battery_path="${VAHO_BATTERY_PATH:-}"
 
 if [[ -z "$battery_path" ]]; then
   for candidate in /sys/class/power_supply/*; do
@@ -15,13 +15,13 @@ if [[ -z "$battery_path" ]]; then
 fi
 
 if [[ -z "$battery_path" || ! -d "$battery_path" ]]; then
-  printf '%s\n' 'hyprglass: no battery device detected' >&2
+  printf '%s\n' 'vaho: no battery device detected' >&2
   exit 1
 fi
 
 battery_name="${battery_path##*/}"
 if [[ ! "$battery_name" =~ ^[A-Za-z0-9_]+$ ]]; then
-  printf 'hyprglass: unsupported battery device name: %s\n' "$battery_name" >&2
+  printf 'vaho: unsupported battery device name: %s\n' "$battery_name" >&2
   exit 1
 fi
 
@@ -29,7 +29,7 @@ write_thresholds() {
   local start=$1 stop=$2
   printf 'START_CHARGE_THRESH_%s=%s\nSTOP_CHARGE_THRESH_%s=%s\n' \
     "$battery_name" "$start" "$battery_name" "$stop" | \
-    sudo tee /etc/tlp.d/99-hyprglass-battery.conf >/dev/null
+    sudo tee /etc/tlp.d/99-vaho-battery.conf >/dev/null
 }
 
 case $MODE in
@@ -50,7 +50,7 @@ case $MODE in
     ;;
   reset)
     # Eliminar configuración personalizada
-    sudo rm -f /etc/tlp.d/99-hyprglass-battery.conf
+    sudo rm -f /etc/tlp.d/99-vaho-battery.conf
     notify-send "🔋 Batería" "Modo: DEFAULT TLP" -t 3000
     ;;
   *)
@@ -63,7 +63,7 @@ esac
 sudo tlp start 2>/dev/null
 
 # Notificar nivel actual
-sleep "${HYPRGLASS_SLEEP_SECONDS:-2}"
+sleep "${VAHO_SLEEP_SECONDS:-2}"
 LEVEL=$(cat "$battery_path/capacity" 2>/dev/null || printf '?')
 STATUS=$(cat "$battery_path/status" 2>/dev/null || printf '?')
 notify-send "🔋 Estado Actual" "Nivel: ${LEVEL}%\nEstado: ${STATUS}" -t 5000

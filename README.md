@@ -1,13 +1,13 @@
-# hyprglass
+# vaho
 
 [English](README.en.md) · **Español**
 
-[![CI](https://github.com/AvilaCarlosDev/hyprglass/actions/workflows/ci.yml/badge.svg)](https://github.com/AvilaCarlosDev/hyprglass/actions/workflows/ci.yml)
+[![CI](https://github.com/AvilaCarlosDev/vaho/actions/workflows/ci.yml/badge.svg)](https://github.com/AvilaCarlosDev/vaho/actions/workflows/ci.yml)
 [![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
 ![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?logo=archlinux&logoColor=white)
 ![Hyprland](https://img.shields.io/badge/Hyprland-0.56.2-00a8a8)
 
-Hyprglass es el subconjunto público y portable de mi escritorio Arch Linux +
+Vaho es el subconjunto público y portable de mi escritorio Arch Linux +
 Hyprland. Su lenguaje visual usa superficies translúcidas, geometría redondeada
 y menús GTK propios. No es un clon de macOS ni pretende reproducir otro entorno
 de escritorio.
@@ -38,19 +38,19 @@ de seguridad locales.
 
 Waybar:
 
-![Waybar](docs/assets/hyprglass-waybar.png)
+![Waybar](docs/assets/vaho-waybar.png)
 
 Uno de los menús de vidrio:
 
-![Menú de energía](docs/assets/hyprglass-glass-menu.png)
+![Menú de energía](docs/assets/vaho-glass-menu.png)
 
 Demostración del instalador real `install.sh` en un entorno aislado:
 
-![Demostración del instalador](docs/assets/hyprglass-install-demo.png)
+![Demostración del instalador](docs/assets/vaho-install-demo.png)
 
 ## Requisitos
 
-Hyprglass apunta a Arch Linux. La lista completa de paquetes, función por
+Vaho apunta a Arch Linux. La lista completa de paquetes, función por
 función, está en [PACKAGES.md](PACKAGES.md). Los menús propios requieren
 **GTK 3, PyGObject y GtkLayerShell**.
 
@@ -70,7 +70,7 @@ Revisa el repositorio antes de instalar y luego ejecuta:
 
 El instalador:
 
-1. crea una copia de seguridad con fecha en `~/.hyprglass-backup-*`;
+1. crea una copia de seguridad con fecha en `~/.vaho-backup-*`;
 2. copia las preferencias elegidas de Hyprland, Waybar y GTK;
 3. instala el ayudante opcional de batería en `~/scripts`.
 
@@ -110,16 +110,16 @@ espacio de trabajo 10 queda asignado a ella; usa `SUPER + 0` y
 Los valores por defecto se pueden cambiar en la sesión de Hyprland:
 
 ```sh
-export HYPRGLASS_PRIMARY_MONITOR=eDP-1
-export HYPRGLASS_TABLET_MODE=1280x800@60
-export HYPRGLASS_TABLET_POSITION=1920x0
+export VAHO_PRIMARY_MONITOR=eDP-1
+export VAHO_TABLET_MODE=1280x800@60
+export VAHO_TABLET_POSITION=1920x0
 ```
 
-WayVNC solo se inicia cuando la salida de la tableta está activa, y Hyprglass le
+WayVNC solo se inicia cuando la salida de la tableta está activa, y Vaho le
 pasa de forma explícita la salida virtual detectada. WayVNC escucha en localhost
 por defecto, así que el acceso remoto requiere tu propia configuración
 autenticada de WayVNC y reglas de cortafuegos o de red privada adecuadas.
-Hyprglass no incluye usuarios, contraseñas ni certificados, ni un modo de
+Vaho no incluye usuarios, contraseñas ni certificados, ni un modo de
 escucha pública por defecto.
 
 ### Clima
@@ -136,10 +136,10 @@ export WEATHER_LOCATION_PRETTY='Caracas, VE'
 El menú de batería llama a TLP mediante `~/scripts/battery-mode.sh`. Es opcional
 y solo funciona si el firmware del portátil y TLP admiten umbrales de carga. El
 ayudante detecta el primer dispositivo de energía de tipo `Battery`; define
-`HYPRGLASS_BATTERY_PATH` para forzar otro.
+`VAHO_BATTERY_PATH` para forzar otro.
 
 El ayudante usa `sudo` y escribe únicamente
-`/etc/tlp.d/99-hyprglass-battery.conf`. Revísalo antes de elegir un modo.
+`/etc/tlp.d/99-vaho-battery.conf`. Revísalo antes de elegir un modo.
 
 ## Validación
 

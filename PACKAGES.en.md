@@ -2,7 +2,7 @@
 
 **English** · [Español](PACKAGES.md)
 
-Hyprglass is developed and tested on Arch Linux. The package groups below
+Vaho is developed and tested on Arch Linux. The package groups below
 describe what the repository actually calls; they are not a distro-agnostic
 installer.
 

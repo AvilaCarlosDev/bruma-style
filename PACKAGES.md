@@ -2,7 +2,7 @@
 
 [English](PACKAGES.en.md) · **Español**
 
-Hyprglass se desarrolla y prueba en Arch Linux. Los grupos de paquetes de abajo
+Vaho se desarrolla y prueba en Arch Linux. Los grupos de paquetes de abajo
 describen lo que el repositorio realmente invoca; no es un instalador
 independiente de la distribución.
 

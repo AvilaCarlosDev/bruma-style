@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-runtime_dir="${XDG_RUNTIME_DIR:?vaho: XDG_RUNTIME_DIR no está definido; el PID y el registro de WayVNC no van en /tmp compartido}"
-pid_file="$runtime_dir/vaho-wayvnc.pid"
-log_file="$runtime_dir/vaho-wayvnc.log"
-tablet_mode="${VAHO_TABLET_MODE:-1280x800@60}"
-tablet_position="${VAHO_TABLET_POSITION:-1920x0}"
-primary_monitor="${VAHO_PRIMARY_MONITOR:-}"
+runtime_dir="${XDG_RUNTIME_DIR:?bruma-style: XDG_RUNTIME_DIR no está definido; el PID y el registro de WayVNC no van en /tmp compartido}"
+pid_file="$runtime_dir/bruma-style-wayvnc.pid"
+log_file="$runtime_dir/bruma-style-wayvnc.log"
+tablet_mode="${BRUMA_TABLET_MODE:-1280x800@60}"
+tablet_position="${BRUMA_TABLET_POSITION:-1920x0}"
+primary_monitor="${BRUMA_PRIMARY_MONITOR:-}"
 
 monitor_json="$(hyprctl monitors -j)"
 if [[ -z "$primary_monitor" ]]; then
@@ -23,13 +23,13 @@ fi
 if [[ -z "$tablet_monitor" || -z "$primary_monitor" ]] ||
    [[ ! "$tablet_monitor" =~ ^[A-Za-z0-9._:-]+$ ]] ||
    [[ ! "$primary_monitor" =~ ^[A-Za-z0-9._:-]+$ ]]; then
-  printf '%s\n' 'vaho: failed to detect physical or headless monitor' >&2
+  printf '%s\n' 'bruma-style: failed to detect physical or headless monitor' >&2
   exit 1
 fi
 
 if [[ ! "$tablet_mode" =~ ^(preferred|[0-9]+x[0-9]+(@[0-9]+([.][0-9]+)?)?)$ ]] ||
    [[ ! "$tablet_position" =~ ^-?[0-9]+x-?[0-9]+$ ]]; then
-  printf '%s\n' 'vaho: invalid tablet mode or position' >&2
+  printf '%s\n' 'bruma-style: invalid tablet mode or position' >&2
   exit 1
 fi
 
@@ -38,7 +38,7 @@ hyprctl eval "hl.workspace_rule({ workspace = \"10\", monitor = \"$tablet_monito
 
 original_workspace="$(hyprctl activeworkspace -j | python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')"
 if [[ ! "$original_workspace" =~ ^[0-9]+$ ]]; then
-  printf '%s\n' 'vaho: invalid active workspace id' >&2
+  printf '%s\n' 'bruma-style: invalid active workspace id' >&2
   exit 1
 fi
 stray_workspace="$(hyprctl monitors -j | TABLET_MONITOR="$tablet_monitor" python3 -c 'import json,os,sys; monitor=next((m for m in json.load(sys.stdin) if m["name"] == os.environ["TABLET_MONITOR"]), None); print(monitor["activeWorkspace"]["id"] if monitor and monitor["activeWorkspace"]["id"] != 10 else "")')"
@@ -62,6 +62,6 @@ sleep 0.2
 if ! kill -0 "$wayvnc_pid" 2>/dev/null; then
   rm -f -- "$pid_file"
   hyprctl output remove "$tablet_monitor" || true
-  printf 'vaho: WayVNC failed to start; check %s\n' "$log_file" >&2
+  printf 'bruma-style: WayVNC failed to start; check %s\n' "$log_file" >&2
   exit 1
 fi

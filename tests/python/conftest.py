@@ -33,7 +33,7 @@ sys.path.insert(0, str(GLASS_DIR))
 
 @pytest.fixture
 def load_menu():
-    """Carga un script de `glass/` desde cero, con `VAHO_*` ya aplicado."""
+    """Carga un script de `glass/` desde cero, con `BRUMA_*` ya aplicado."""
 
     def _load(name):
         spec = importlib.util.spec_from_file_location(f"glass_{name}", GLASS_DIR / f"{name}.py")

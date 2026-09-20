@@ -2,7 +2,7 @@
 
 **English** · [Español](PACKAGES.md)
 
-Vaho is developed and tested on Arch Linux. The package groups below
+Bruma-style is developed and tested on Arch Linux. The package groups below
 describe what the repository actually calls; they are not a distro-agnostic
 installer.
 

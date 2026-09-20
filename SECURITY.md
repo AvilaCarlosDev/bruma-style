@@ -4,7 +4,7 @@
 
 ## Español
 
-Vaho contiene configuración de escritorio y scripts auxiliares locales. No
+Bruma-style contiene configuración de escritorio y scripts auxiliares locales. No
 opera ningún servicio alojado y nunca debe incluir credenciales activas ni
 perfiles de red privados.
 
@@ -23,7 +23,7 @@ Solo se mantiene la rama `main` actual.
 
 ## English
 
-Vaho contains desktop configuration and local helper scripts. It does not
+Bruma-style contains desktop configuration and local helper scripts. It does not
 operate a hosted service and it must never include live credentials or private
 network profiles.
 

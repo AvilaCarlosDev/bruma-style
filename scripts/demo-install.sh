@@ -5,11 +5,11 @@
 set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-demo_home="$(mktemp -d /tmp/vaho-demo-home.XXXXXX)"
+demo_home="$(mktemp -d /tmp/bruma-style-demo-home.XXXXXX)"
 trap 'rm -rf "$demo_home"' EXIT
 
 echo "Demo: instalador aislado en HOME temporal"
-echo "HOME temporal: /tmp/vaho-demo-home"
+echo "HOME temporal: /tmp/bruma-style-demo-home"
 echo
 
 mkdir -p "$demo_home/.config/hypr" "$demo_home/.config/waybar"
@@ -24,7 +24,7 @@ HOME="$demo_home" "$repo_dir/install.sh"
 echo
 
 echo "Verificacion:"
-backup_dir=$(find "$demo_home" -maxdepth 1 -name ".vaho-backup-*" | head -1)
+backup_dir=$(find "$demo_home" -maxdepth 1 -name ".bruma-style-backup-*" | head -1)
 if cmp -s "$backup_dir/.config/hypr/hyprland.conf" <(printf '%s\n' '# config previa del usuario (simulada)') &&
    cmp -s "$backup_dir/.config/waybar/config" <(printf '%s\n' '// config previa de waybar (simulada)') &&
    [ -d "$demo_home/.config/hypr/scripts" ]; then

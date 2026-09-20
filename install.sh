@@ -2,12 +2,12 @@
 set -euo pipefail
 
 if [[ -z "${HOME:-}" || "$HOME" == "/" ]]; then
-  printf '%s\n' 'vaho: refusing to install with an empty or root HOME' >&2
+  printf '%s\n' 'bruma-style: refusing to install with an empty or root HOME' >&2
   exit 1
 fi
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-backup_dir="$HOME/.vaho-backup-$(date +%Y%m%d-%H%M%S)-$$"
+backup_dir="$HOME/.bruma-style-backup-$(date +%Y%m%d-%H%M%S)-$$"
 
 echo "Creating backup in: $backup_dir"
 mkdir -p "$backup_dir/.config"

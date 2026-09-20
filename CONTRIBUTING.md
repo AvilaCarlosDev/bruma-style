@@ -4,7 +4,7 @@
 
 ## Español
 
-Vaho es un subconjunto público y curado de un escritorio real, no un marco
+Bruma-style es un subconjunto público y curado de un escritorio real, no un marco
 universal para Hyprland. Las contribuciones deben mejorar la portabilidad, la
 corrección, la privacidad o la documentación sin añadir datos propios de un
 equipo.
@@ -35,7 +35,7 @@ personal. Mantén los cambios enfocados y describe las limitaciones con honestid
 
 ## English
 
-Vaho is a curated public subset of a real desktop, not a universal
+Bruma-style is a curated public subset of a real desktop, not a universal
 Hyprland framework. Contributions should improve portability, correctness,
 privacy or documentation without adding machine-specific data.
 

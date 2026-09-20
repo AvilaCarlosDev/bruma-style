@@ -12,7 +12,7 @@ MODE_SCRIPT = os.path.expanduser("~/scripts/battery-mode.sh")
 
 
 def battery_path():
-    override = os.environ.get("VAHO_BATTERY_PATH")
+    override = os.environ.get("BRUMA_BATTERY_PATH")
     if override:
         return override
 

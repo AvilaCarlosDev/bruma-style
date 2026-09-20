@@ -87,7 +87,7 @@ else
   fail "battery helper path is portable"
 fi
 
-tmp_root="$(mktemp -d /tmp/vaho-tests.XXXXXX)"
+tmp_root="$(mktemp -d /tmp/bruma-style-tests.XXXXXX)"
 trap 'rm -rf -- "$tmp_root"' EXIT
 demo_home="$tmp_root/home"
 mkdir -p "$demo_home/.config/hypr" "$demo_home/.config/waybar"
@@ -101,7 +101,7 @@ else
   fail "installer completes in an isolated HOME"
 fi
 
-backup_dir="$(find "$demo_home" -maxdepth 1 -type d -name '.vaho-backup-*' -print -quit)"
+backup_dir="$(find "$demo_home" -maxdepth 1 -type d -name '.bruma-style-backup-*' -print -quit)"
 if [[ -n "$backup_dir" ]] &&
    grep -qx 'previous-hypr-config' "$backup_dir/.config/hypr/hyprland.lua" &&
    grep -qx 'previous-waybar-config' "$backup_dir/.config/waybar/config"; then
@@ -153,11 +153,11 @@ if [[ "${1:-}" == "monitors" && "${2:-}" == "-j" ]]; then
   printf '%s\n' '[{"name":"eDP-1","activeWorkspace":{"id":1}}]'
   exit 0
 fi
-printf '%s\n' "$*" >> "${VAHO_TEST_LOG:?}"
+printf '%s\n' "$*" >> "${BRUMA_TEST_LOG:?}"
 SH
 chmod +x "$fake_bin/hyprctl"
 
-if PATH="$fake_bin:$PATH" VAHO_TEST_LOG="$fake_state" \
+if PATH="$fake_bin:$PATH" BRUMA_TEST_LOG="$fake_state" \
   .config/hypr/scripts/setup-workspace-rules.sh &&
    [[ "$(wc -l < "$fake_state")" -eq 9 ]] &&
    rg 'workspace = "1", monitor = "eDP-1"' "$fake_state" >/dev/null &&
@@ -177,7 +177,7 @@ cat > "$fake_bin/sudo" <<'SH'
 #!/usr/bin/env bash
 set -euo pipefail
 if [[ "${1:-}" == "tee" ]]; then
-  cat > "${VAHO_TEST_TLP_CONFIG:?}"
+  cat > "${BRUMA_TEST_TLP_CONFIG:?}"
   exit 0
 fi
 if [[ "${1:-}" == "tlp" ]]; then
@@ -193,9 +193,9 @@ SH
 chmod +x "$fake_bin/sudo" "$fake_bin/notify-send"
 
 if PATH="$fake_bin:$PATH" \
-   VAHO_BATTERY_PATH="$fake_battery" \
-   VAHO_TEST_TLP_CONFIG="$fake_tlp_config" \
-   VAHO_SLEEP_SECONDS=0 \
+   BRUMA_BATTERY_PATH="$fake_battery" \
+   BRUMA_TEST_TLP_CONFIG="$fake_tlp_config" \
+   BRUMA_SLEEP_SECONDS=0 \
    scripts/battery-mode.sh preserve &&
    grep -qx 'START_CHARGE_THRESH_BAT1=40' "$fake_tlp_config" &&
    grep -qx 'STOP_CHARGE_THRESH_BAT1=80' "$fake_tlp_config"; then
@@ -211,8 +211,8 @@ mkdir -p "$tablet_runtime"
 cat > "$fake_bin/hyprctl" <<'SH'
 #!/usr/bin/env bash
 set -euo pipefail
-state="${VAHO_TEST_TABLET_STATE:?}"
-log="${VAHO_TEST_TABLET_LOG:?}"
+state="${BRUMA_TEST_TABLET_STATE:?}"
+log="${BRUMA_TEST_TABLET_LOG:?}"
 
 if [[ "${1:-}" == "monitors" && "${2:-}" == "-j" ]]; then
   if [[ -e "$state" ]]; then
@@ -235,17 +235,17 @@ printf '%s\n' "$*" >> "$log"
 SH
 cat > "$fake_bin/wayvnc" <<'SH'
 #!/usr/bin/env bash
-printf 'wayvnc %s\n' "$*" >> "${VAHO_TEST_TABLET_LOG:?}"
+printf 'wayvnc %s\n' "$*" >> "${BRUMA_TEST_TABLET_LOG:?}"
 sleep 30
 SH
 chmod +x "$fake_bin/hyprctl" "$fake_bin/wayvnc"
 
 if PATH="$fake_bin:$PATH" \
    XDG_RUNTIME_DIR="$tablet_runtime" \
-   VAHO_TEST_TABLET_STATE="$tablet_state" \
-   VAHO_TEST_TABLET_LOG="$tablet_log" \
+   BRUMA_TEST_TABLET_STATE="$tablet_state" \
+   BRUMA_TEST_TABLET_LOG="$tablet_log" \
    .config/hypr/scripts/start-tablet-monitor.sh &&
-   [[ -e "$tablet_state" && -s "$tablet_runtime/vaho-wayvnc.pid" ]] &&
+   [[ -e "$tablet_state" && -s "$tablet_runtime/bruma-style-wayvnc.pid" ]] &&
    rg 'output create headless' "$tablet_log" >/dev/null &&
    rg 'workspace = "10", monitor = "HEADLESS-1"' "$tablet_log" >/dev/null &&
    rg 'wayvnc --output HEADLESS-1' "$tablet_log" >/dev/null; then
@@ -256,10 +256,10 @@ fi
 
 if PATH="$fake_bin:$PATH" \
    XDG_RUNTIME_DIR="$tablet_runtime" \
-   VAHO_TEST_TABLET_STATE="$tablet_state" \
-   VAHO_TEST_TABLET_LOG="$tablet_log" \
+   BRUMA_TEST_TABLET_STATE="$tablet_state" \
+   BRUMA_TEST_TABLET_LOG="$tablet_log" \
    .config/hypr/scripts/stop-tablet-monitor.sh &&
-   [[ ! -e "$tablet_state" && ! -e "$tablet_runtime/vaho-wayvnc.pid" ]] &&
+   [[ ! -e "$tablet_state" && ! -e "$tablet_runtime/bruma-style-wayvnc.pid" ]] &&
    rg 'output remove HEADLESS-1' "$tablet_log" >/dev/null; then
   pass "tablet stop terminates its WayVNC process and removes the output"
 else
@@ -272,14 +272,14 @@ weather_log="$tmp_root/weather-curl.log"
 mkdir -p "$weather_bin" "$tmp_root/weather-home"
 cat > "$weather_bin/curl" <<'SH'
 #!/usr/bin/env bash
-printf '%s\n' "${@: -1}" >> "${VAHO_TEST_CURL_LOG:?}"
+printf '%s\n' "${@: -1}" >> "${BRUMA_TEST_CURL_LOG:?}"
 SH
 chmod +x "$weather_bin/curl"
 
 : > "$weather_log"
 PATH="$weather_bin:$PATH" \
   XDG_RUNTIME_DIR="$tmp_root/weather-home" \
-  VAHO_TEST_CURL_LOG="$weather_log" \
+  BRUMA_TEST_CURL_LOG="$weather_log" \
   WEATHER_LOCATION='Ciudad de Panamá/../x?y=1#z' \
   .config/waybar/scripts/weather.sh >/dev/null 2>&1 || true
 expect "weather location is percent-encoded in the request URL" \
@@ -288,7 +288,7 @@ expect "weather location is percent-encoded in the request URL" \
 : > "$weather_log"
 PATH="$weather_bin:$PATH" \
   XDG_RUNTIME_DIR="$tmp_root/weather-home" \
-  VAHO_TEST_CURL_LOG="$weather_log" \
+  BRUMA_TEST_CURL_LOG="$weather_log" \
   .config/waybar/scripts/weather.sh >/dev/null 2>&1 || true
 expect "weather default location still resolves to Caracas" \
   grep -qxF 'https://wttr.in/Caracas%2CVenezuela?format=j1' "$weather_log"
@@ -296,7 +296,7 @@ expect "weather default location still resolves to Caracas" \
 no_runtime_home="$tmp_root/no-runtime-home"
 mkdir -p "$no_runtime_home"
 env -u XDG_RUNTIME_DIR -u XDG_CACHE_HOME HOME="$no_runtime_home" PATH="$weather_bin:$PATH" \
-  VAHO_TEST_CURL_LOG="$weather_log" \
+  BRUMA_TEST_CURL_LOG="$weather_log" \
   .config/waybar/scripts/weather.sh >/dev/null 2>&1 || true
 expect "weather cache falls back to a user-owned directory, never a shared /tmp path" \
   test -d "$no_runtime_home/.cache/waybar-weather"
@@ -318,4 +318,4 @@ if (( failures > 0 )); then
   exit 1
 fi
 
-printf '\nAll vaho checks passed.\n'
+printf '\nAll bruma-style checks passed.\n'
